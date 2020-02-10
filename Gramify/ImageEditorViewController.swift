@@ -25,7 +25,6 @@ class ImageEditorViewController: UIViewController {
     @IBOutlet weak var topRightFadeButton: UIButton!
     @IBOutlet weak var bottomRightFadeButton: UIButton!
     
-    lazy var image = ImgurImage(imageDictionary: [String : Any]())
     var selectedFilter = "pinkRoses"
     var originalImage = UIImage()
     var imageToUpload = UIImage()
@@ -40,23 +39,16 @@ class ImageEditorViewController: UIViewController {
     }
     
     func addImageToImagePreview() {
-        getData(fromURL: image.link!) { data in
-            
-            DispatchQueue.main.async {
-                
-                self.originalImage = UIImage(data: data!)!
-                self.imageToUpload = self.originalImage
-                
-                self.imagePreview.alpha = 0
-                self.imagePreview.image = self.originalImage
-                
-                UIView.animate(withDuration: 0.4) {
-                    self.imagePreview.alpha = 1
-                }
-                
-            }
-            
+        
+        self.imageToUpload = self.originalImage
+        
+        self.imagePreview.alpha = 0
+        self.imagePreview.image = self.originalImage
+        
+        UIView.animate(withDuration: 0.4) {
+            self.imagePreview.alpha = 1
         }
+        
     }
     
     func setIdentifiersForButtons() {
@@ -113,14 +105,6 @@ class ImageEditorViewController: UIViewController {
     func setFadeBackground(forButton button : UIButton , withFilter filterName : String) {
         let imageName = "\(filterName + button.accessibilityIdentifier!)"
         button.setBackgroundImage(UIImage(named: imageName), for: .normal)
-    }
-    
-    func getData(fromURL urlString:String, completion: @escaping ((_ data: Data?) -> Void)) {
-        let url = URL(string: urlString)!
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            completion(data)
-        }.resume()
-        
     }
     
     func applyFilter(toImage image : UIImage , withFilterImage filterImage : UIImage , completion : @escaping ((_ filteredImage : UIImage) -> Void)) {
