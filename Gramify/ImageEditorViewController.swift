@@ -93,7 +93,7 @@ class ImageEditorViewController: UIViewController {
     @objc func fadeButtonpressed(sender : UIButton) {
         let fadeDirection = sender.accessibilityIdentifier!
         let filterName = "\(selectedFilter + fadeDirection)"
-        var filterImage = UIImage(named: "nightSkyOriginal")
+        var filterImage = UIImage(named: filterName)
         filterImage = convertImage(filterImage: filterImage!, toSizeOfImage: originalImage)
         self.applyFilter(toImage: self.originalImage, withFilterImage: filterImage!) { filteredImage in
             
@@ -121,7 +121,38 @@ class ImageEditorViewController: UIViewController {
     func applyFilter(toImage image : UIImage , withFilterImage filterImage : UIImage , completion : @escaping ((_ filteredImage : UIImage) -> Void)) {
         let originalImage = CIImage(image: image)
         let filterImage = CIImage(image: filterImage)
-        let filter = CIFilter(name: "CIScreenBlendMode")
+        
+//        CIAdditionCompositing
+//        CIColorBlendMode
+//        CIColorBurnBlendMode
+//        CIColorDodgeBlendMode <--
+//        CIDarkenBlendMode
+//        CIDifferenceBlendMode <--
+//        CIDivideBlendMode <--
+//        CIExclusionBlendMode <------
+//        CIHardLightBlendMode
+//        CIHueBlendMode
+//        CILightenBlendMode
+//        CILinearBurnBlendMode
+//        CILinearDodgeBlendMode <------
+//        CILuminosityBlendMode
+//        CIMaximumCompositing
+//        CIMinimumCompositing
+//        CIMultiplyBlendMode
+//        CIMultiplyCompositing
+//        CIOverlayBlendMode
+//        CIPinLightBlendMode
+//        CISaturationBlendMode
+//        CIScreenBlendMode
+//        CISoftLightBlendMode
+//        CISourceAtopCompositing
+//        CISourceInCompositing
+//        CISourceOutCompositing
+//        CISourceOverCompositing
+//        CISubtractBlendMode <------
+
+        
+        let filter = CIFilter(name: "CIDivideBlendMode")
         filter?.setValue(originalImage, forKey: "inputBackgroundImage")
         filter?.setValue(filterImage, forKey: "inputImage")
         
