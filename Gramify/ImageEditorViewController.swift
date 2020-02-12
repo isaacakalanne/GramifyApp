@@ -40,10 +40,12 @@ class ImageEditorViewController: UIViewController {
     
     func addImageToImagePreview() {
         
-        self.imageToUpload = self.originalImage
+        originalImage = UIImage(named: "testPortrait2")!
         
-        self.imagePreview.alpha = 0
-        self.imagePreview.image = self.originalImage
+        imageToUpload = originalImage
+        
+        imagePreview.alpha = 0
+        imagePreview.image = originalImage
         
         UIView.animate(withDuration: 0.4) {
             self.imagePreview.alpha = 1
@@ -91,7 +93,8 @@ class ImageEditorViewController: UIViewController {
     @objc func fadeButtonpressed(sender : UIButton) {
         let fadeDirection = sender.accessibilityIdentifier!
         let filterName = "\(selectedFilter + fadeDirection)"
-        let filterImage = UIImage(named: filterName)
+        var filterImage = UIImage(named: "nightSkyOriginal")
+        filterImage = convertImage(filterImage: filterImage!, toSizeOfImage: originalImage)
         self.applyFilter(toImage: self.originalImage, withFilterImage: filterImage!) { filteredImage in
             
             UIView.animate(withDuration: 0.4) {
@@ -100,6 +103,14 @@ class ImageEditorViewController: UIViewController {
             }
             
         }
+    }
+    
+    func convertImage(filterImage : UIImage , toSizeOfImage userImage : UIImage) -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(userImage.size, false, 0.0);
+        filterImage.draw(in: CGRect(origin: CGPoint.zero, size: CGSize(width: userImage.size.width, height: userImage.size.height)))
+        let resizedFilterImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return resizedFilterImage
     }
     
     func setFadeBackground(forButton button : UIButton , withFilter filterName : String) {
