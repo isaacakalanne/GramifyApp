@@ -13,7 +13,6 @@ class ImageEditorViewController: UIViewController {
     @IBOutlet weak var imagePreview: UIImageView!
     @IBOutlet weak var filtersScrollView: UIScrollView!
     @IBOutlet weak var fadeTypeScrollView: UIScrollView!
-    @IBOutlet weak var shareButton: UIButton!
     
     @IBOutlet weak var pinkRosesFilterButton: UIButton!
     @IBOutlet weak var oceanWaveFilterButton: UIButton!
@@ -75,8 +74,6 @@ class ImageEditorViewController: UIViewController {
         topLeftFadeButton.addTarget(self, action: #selector(fadeButtonpressed), for: .touchUpInside)
         topRightFadeButton.addTarget(self, action: #selector(fadeButtonpressed), for: .touchUpInside)
         bottomRightFadeButton.addTarget(self, action: #selector(fadeButtonpressed), for: .touchUpInside)
-        
-        shareButton.addTarget(self, action: #selector(shareImageToImgur), for: .touchUpInside)
     }
     
     @objc func filterButtonPressed(sender : UIButton) {
@@ -127,7 +124,7 @@ class ImageEditorViewController: UIViewController {
 //        CIColorBurnBlendMode
 //        CIColorDodgeBlendMode <--
 //        CIDarkenBlendMode
-//        CIDifferenceBlendMode <--
+//        CIDifferenceBlendMode <------
 //        CIDivideBlendMode <--
 //        CIExclusionBlendMode <------
 //        CIHardLightBlendMode
@@ -152,34 +149,13 @@ class ImageEditorViewController: UIViewController {
 //        CISubtractBlendMode <------
 
         
-        let filter = CIFilter(name: "CIDivideBlendMode")
+        let filter = CIFilter(name: "CILinearDodgeBlendMode")
         filter?.setValue(originalImage, forKey: "inputBackgroundImage")
         filter?.setValue(filterImage, forKey: "inputImage")
         
         let imageRef = (filter?.outputImage!.cropped(to: (filter?.outputImage!.extent)!))!
         let imageWithFilter = UIImage(ciImage: imageRef, scale: image.scale, orientation: image.imageOrientation)
         completion(imageWithFilter)
-    }
-    
-    @objc func shareImageToImgur() {
-        shareButton.setTitle("Uploading...", for: .normal)
-        shareButton.isUserInteractionEnabled = false
-        let networkProcessor = NetworkProcessor()
-        let url = URL(string: "https://api.imgur.com/3/image")
-        networkProcessor.uploadImage(imageToUpload, withURL: url!) { uploadedImageData in
-            if let jsonData = uploadedImageData?["data"] as? [String : Any] {
-                
-                let linkString : String = jsonData["link"] as! String
-                guard let url = URL(string: linkString) else { return }
-                
-                DispatchQueue.main.async {
-                    self.shareButton.isUserInteractionEnabled = true
-                    self.shareButton.setTitle("Share to Imgur", for: .normal)
-                    UIApplication.shared.open(url)
-                }
-                
-            }
-        }
     }
 
 }
