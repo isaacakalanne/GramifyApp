@@ -52,7 +52,9 @@
                     </view>
                     <navigationItem key="navigationItem" title="Editor" id="QB3-TM-bNY"/>
                     <connections>
+                        <outlet property="filterSelectTableView" destination="Luh-09-YtK" id="AjN-8O-2rO"/>
                         <outlet property="imagePreview" destination="7FK-ei-WP6" id="dwf-eV-Ijw"/>
+                        <outlet property="modeSelectTableView" destination="RaM-wm-gcB" id="RPf-vF-kAQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eM0-kc-yhe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

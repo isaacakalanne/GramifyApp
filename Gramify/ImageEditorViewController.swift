@@ -23,57 +23,33 @@ class ImageEditorViewController: UIViewController {
     @IBOutlet weak var topLeftFadeButton: UIButton!
     @IBOutlet weak var topRightFadeButton: UIButton!
     @IBOutlet weak var bottomRightFadeButton: UIButton!
+    @IBOutlet weak var filterSelectTableView: UITableView!
+    @IBOutlet weak var modeSelectTableView: UITableView!
     
     var selectedFilter = "pinkRoses"
     var originalImage = UIImage()
-    var imageToUpload = UIImage()
+    var filteredImage = UIImage()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setIdentifiersForButtons()
-        addTargetsToButtons()
+        createImages()
         addImageToImagePreview()
         
     }
     
     func addImageToImagePreview() {
-        
-        originalImage = UIImage(named: "testPortrait2")!
-        
-        imageToUpload = originalImage
-        
         imagePreview.alpha = 0
         imagePreview.image = originalImage
         
         UIView.animate(withDuration: 0.4) {
             self.imagePreview.alpha = 1
         }
-        
     }
     
-    func setIdentifiersForButtons() {
-        pinkRosesFilterButton.accessibilityIdentifier = "pinkRoses"
-        oceanWaveFilterButton.accessibilityIdentifier = "oceanWave"
-        fallingLeavesFilterButton.accessibilityIdentifier = "fallingLeaves"
-        nightSkyFilterButton.accessibilityIdentifier = "nightSky"
-        
-        bottomLeftFadeButton.accessibilityIdentifier = "BottomLeft"
-        topLeftFadeButton.accessibilityIdentifier = "TopLeft"
-        topRightFadeButton.accessibilityIdentifier = "TopRight"
-        bottomRightFadeButton.accessibilityIdentifier = "BottomRight"
-    }
-    
-    func addTargetsToButtons() {
-        pinkRosesFilterButton.addTarget(self, action: #selector(filterButtonPressed), for: .touchUpInside)
-        oceanWaveFilterButton.addTarget(self, action: #selector(filterButtonPressed), for: .touchUpInside)
-        fallingLeavesFilterButton.addTarget(self, action: #selector(filterButtonPressed), for: .touchUpInside)
-        nightSkyFilterButton.addTarget(self, action: #selector(filterButtonPressed), for: .touchUpInside)
-        
-        bottomLeftFadeButton.addTarget(self, action: #selector(fadeButtonpressed), for: .touchUpInside)
-        topLeftFadeButton.addTarget(self, action: #selector(fadeButtonpressed), for: .touchUpInside)
-        topRightFadeButton.addTarget(self, action: #selector(fadeButtonpressed), for: .touchUpInside)
-        bottomRightFadeButton.addTarget(self, action: #selector(fadeButtonpressed), for: .touchUpInside)
+    func createImages() {
+        originalImage = UIImage(named: "testPortrait2")!
+        filteredImage = originalImage
     }
     
     @objc func filterButtonPressed(sender : UIButton) {
@@ -96,7 +72,7 @@ class ImageEditorViewController: UIViewController {
             
             UIView.animate(withDuration: 0.4) {
                 self.imagePreview.image = filteredImage // This doesn't currently correctly animate the transition
-                self.imageToUpload = filteredImage
+                self.filteredImage = filteredImage
             }
             
         }
@@ -147,7 +123,6 @@ class ImageEditorViewController: UIViewController {
 //        CISourceOutCompositing
 //        CISourceOverCompositing
 //        CISubtractBlendMode <------
-
         
         let filter = CIFilter(name: "CILinearDodgeBlendMode")
         filter?.setValue(originalImage, forKey: "inputBackgroundImage")
