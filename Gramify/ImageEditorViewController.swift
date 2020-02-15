@@ -126,6 +126,7 @@ class ImageEditorViewController: UIViewController {
         
         // TO DO :
         // - Use CISourceAtopCompositing (or similar CIFilter) to combine user-uploaded filter image and image of white-to-transparent fade. This combined image can then be used as a faded filter image, rather than having to individually create each one. These images can then be flipped horizontally and vertically to fade from all 4 corners.
+        // - Change'Ddownload' button to 'Upload' button, to allow user to upload their image to Instagram (or other online platform) with one click
         
         let filter = CIFilter(name: "CILinearDodgeBlendMode")
         filter?.setValue(originalImage, forKey: "inputBackgroundImage")
