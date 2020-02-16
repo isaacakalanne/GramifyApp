@@ -10,20 +10,20 @@ import Foundation
 
 class FiltersDataStore {
     
-    let pinkRosesFilter = ["filterName" : "Pink Roses",
+    let pinkRoses = ["filterName" : "Pink Roses",
                            "imageFileName" : "pinkRoses"]
     
-    let oceanWaveFilter = ["filterName" : "Ocean Wave",
+    let oceanWave = ["filterName" : "Ocean Wave",
                            "imageFileName" : "oceanWave"]
     
-    let fallingLeavesFilter = ["filterName" : "Falling Leaves",
+    let fallingLeaves = ["filterName" : "Falling Leaves",
                                "imageFileName" : "fallingLeaves"]
     
-    let nightSkyFilter = ["filterName" : "Night Sky",
+    let nightSky = ["filterName" : "Night Sky",
                           "imageFileName" : "nightSky"]
     
     func getListOfFilters() -> Array<Dictionary<String, Any>> {
-        let listOfFilters = [pinkRosesFilter, oceanWaveFilter, fallingLeavesFilter, nightSkyFilter]
+        let listOfFilters = [pinkRoses, oceanWave, fallingLeaves, nightSky]
         return listOfFilters
     }
     
