@@ -74,8 +74,23 @@ class ImageEditorViewController: UIViewController {
                 self.imagePreview.image = filteredImage // This doesn't currently correctly animate the transition
                 self.filteredImage = filteredImage
             }
-            
         }
+    }
+    
+    func flipImageLeftRight(_ image: UIImage) -> UIImage? {
+
+        UIGraphicsBeginImageContextWithOptions(image.size, false, image.scale)
+        
+        let context = UIGraphicsGetCurrentContext()!
+        context.translateBy(x: image.size.width, y: image.size.height)
+        context.scaleBy(x: -image.scale, y: -image.scale)
+        context.draw(image.cgImage!, in: CGRect(origin:CGPoint.zero, size: image.size))
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+
+        UIGraphicsEndImageContext()
+
+        return newImage
     }
     
     func convertImage(filterImage : UIImage , toSizeOfImage userImage : UIImage) -> UIImage {
@@ -90,6 +105,10 @@ class ImageEditorViewController: UIViewController {
         let imageName = "\(filterName + button.accessibilityIdentifier!)"
         button.setBackgroundImage(UIImage(named: imageName), for: .normal)
     }
+    
+    // TO DO :
+    // - Use CISourceAtopCompositing (or similar CIFilter) to combine user-uploaded filter image and image of black-to-transparent fade. This combined image can then be used as a faded filter image, rather than having to individually create each one. These images can then be flipped horizontally and vertically to fade from all 4 corners.
+    // - Change'Ddownload' button to 'Upload' button, to allow user to upload their image to Instagram (or other online platform) with one click
     
     func applyFilter(toImage image : UIImage , withFilterImage filterImage : UIImage , completion : @escaping ((_ filteredImage : UIImage) -> Void)) {
         let originalImage = CIImage(image: image)
@@ -123,10 +142,6 @@ class ImageEditorViewController: UIViewController {
 //        CISourceOutCompositing
 //        CISourceOverCompositing
 //        CISubtractBlendMode <------
-        
-        // TO DO :
-        // - Use CISourceAtopCompositing (or similar CIFilter) to combine user-uploaded filter image and image of white-to-transparent fade. This combined image can then be used as a faded filter image, rather than having to individually create each one. These images can then be flipped horizontally and vertically to fade from all 4 corners.
-        // - Change'Ddownload' button to 'Upload' button, to allow user to upload their image to Instagram (or other online platform) with one click
         
         let filter = CIFilter(name: "CILinearDodgeBlendMode")
         filter?.setValue(originalImage, forKey: "inputBackgroundImage")
