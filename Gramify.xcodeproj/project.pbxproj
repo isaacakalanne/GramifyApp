@@ -18,6 +18,7 @@
 		1191A3DD23E3164E00605699 /* NetworkProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1176796A23E3135F0037E6F5 /* NetworkProcessor.swift */; };
 		11EEDED323F8A7DE0006C851 /* FiltersDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EEDED223F8A7DE0006C851 /* FiltersDataStore.swift */; };
 		11EEDED523F8A9CC0006C851 /* ModesDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EEDED423F8A9CC0006C851 /* ModesDataStore.swift */; };
+		11EEDED723F985020006C851 /* ImageConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EEDED623F985020006C851 /* ImageConverter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 		1176796A23E3135F0037E6F5 /* NetworkProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProcessor.swift; sourceTree = "<group>"; };
 		11EEDED223F8A7DE0006C851 /* FiltersDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersDataStore.swift; sourceTree = "<group>"; };
 		11EEDED423F8A9CC0006C851 /* ModesDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModesDataStore.swift; sourceTree = "<group>"; };
+		11EEDED623F985020006C851 /* ImageConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageConverter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +110,7 @@
 				1176793623E1B8550037E6F5 /* AppDelegate.swift */,
 				1176793823E1B8550037E6F5 /* SceneDelegate.swift */,
 				110275D623E9B9C00036F580 /* EditScreenViewController.swift */,
+				11EEDED623F985020006C851 /* ImageConverter.swift */,
 				11EEDED223F8A7DE0006C851 /* FiltersDataStore.swift */,
 				11EEDED423F8A9CC0006C851 /* ModesDataStore.swift */,
 				1176796A23E3135F0037E6F5 /* NetworkProcessor.swift */,
@@ -269,6 +272,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1176793723E1B8550037E6F5 /* AppDelegate.swift in Sources */,
+				11EEDED723F985020006C851 /* ImageConverter.swift in Sources */,
 				110275D723E9B9C00036F580 /* EditScreenViewController.swift in Sources */,
 				11EEDED523F8A9CC0006C851 /* ModesDataStore.swift in Sources */,
 				11EEDED323F8A7DE0006C851 /* FiltersDataStore.swift in Sources */,
