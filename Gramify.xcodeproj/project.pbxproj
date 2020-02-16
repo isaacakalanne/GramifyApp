@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		110275D723E9B9C00036F580 /* ImageEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110275D623E9B9C00036F580 /* ImageEditorViewController.swift */; };
+		110275D723E9B9C00036F580 /* EditScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110275D623E9B9C00036F580 /* EditScreenViewController.swift */; };
 		1176793723E1B8550037E6F5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1176793623E1B8550037E6F5 /* AppDelegate.swift */; };
 		1176793923E1B8550037E6F5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1176793823E1B8550037E6F5 /* SceneDelegate.swift */; };
 		1176793E23E1B8550037E6F5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1176793C23E1B8550037E6F5 /* Main.storyboard */; };
@@ -38,7 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		110275D623E9B9C00036F580 /* ImageEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEditorViewController.swift; sourceTree = "<group>"; };
+		110275D623E9B9C00036F580 /* EditScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditScreenViewController.swift; sourceTree = "<group>"; };
 		1176793323E1B8550037E6F5 /* Gramify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gramify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1176793623E1B8550037E6F5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1176793823E1B8550037E6F5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -107,7 +107,7 @@
 			children = (
 				1176793623E1B8550037E6F5 /* AppDelegate.swift */,
 				1176793823E1B8550037E6F5 /* SceneDelegate.swift */,
-				110275D623E9B9C00036F580 /* ImageEditorViewController.swift */,
+				110275D623E9B9C00036F580 /* EditScreenViewController.swift */,
 				11EEDED223F8A7DE0006C851 /* FiltersDataStore.swift */,
 				11EEDED423F8A9CC0006C851 /* ModesDataStore.swift */,
 				1176796A23E3135F0037E6F5 /* NetworkProcessor.swift */,
@@ -269,7 +269,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1176793723E1B8550037E6F5 /* AppDelegate.swift in Sources */,
-				110275D723E9B9C00036F580 /* ImageEditorViewController.swift in Sources */,
+				110275D723E9B9C00036F580 /* EditScreenViewController.swift in Sources */,
 				11EEDED523F8A9CC0006C851 /* ModesDataStore.swift in Sources */,
 				11EEDED323F8A7DE0006C851 /* FiltersDataStore.swift in Sources */,
 				1176793923E1B8550037E6F5 /* SceneDelegate.swift in Sources */,

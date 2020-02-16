@@ -1,5 +1,5 @@
 //
-//  ImageEditorViewController.swift
+//  EditScreenViewController.swift
 //  Gramify
 //
 //  Created by Isaac Akalanne on 04/02/2020.
@@ -8,37 +8,35 @@
 
 import UIKit
 
-class ImageEditorViewController: UIViewController {
+class EditScreenViewController: UIViewController {
     
     @IBOutlet weak var imagePreview: UIImageView!
-    @IBOutlet weak var filtersScrollView: UIScrollView!
-    @IBOutlet weak var fadeTypeScrollView: UIScrollView!
-    
-    @IBOutlet weak var pinkRosesFilterButton: UIButton!
-    @IBOutlet weak var oceanWaveFilterButton: UIButton!
-    @IBOutlet weak var fallingLeavesFilterButton: UIButton!
-    @IBOutlet weak var nightSkyFilterButton: UIButton!
-    
-    @IBOutlet weak var bottomLeftFadeButton: UIButton!
-    @IBOutlet weak var topLeftFadeButton: UIButton!
-    @IBOutlet weak var topRightFadeButton: UIButton!
-    @IBOutlet weak var bottomRightFadeButton: UIButton!
-    @IBOutlet weak var filterSelectTableView: UITableView!
-    @IBOutlet weak var modeSelectTableView: UITableView!
+    @IBOutlet weak var editSelectCollectionView: UICollectionView!
+    @IBOutlet weak var modeSelectCollectionView: UICollectionView!
     
     var selectedFilter = "pinkRoses"
     var originalImage = UIImage()
     var filteredImage = UIImage()
+    var listOfFilters : Array<Any> = []
+    var listOfModes : Array<Any> = []
+    
+    let filtersDataStore = FiltersDataStore()
+    let modesDataStore = ModesDataStore()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         createImages()
-        addImageToImagePreview()
-        
+        initialiseImagePreview()
+        createArraysForTableViews()
     }
     
-    func addImageToImagePreview() {
+    func createImages() {
+        originalImage = UIImage(named: "testPortrait2")!
+        filteredImage = originalImage
+    }
+    
+    func initialiseImagePreview() {
         imagePreview.alpha = 0
         imagePreview.image = originalImage
         
@@ -47,20 +45,9 @@ class ImageEditorViewController: UIViewController {
         }
     }
     
-    func createImages() {
-        originalImage = UIImage(named: "testPortrait2")!
-        filteredImage = originalImage
-    }
-    
-    @objc func filterButtonPressed(sender : UIButton) {
-        if selectedFilter != sender.accessibilityIdentifier {
-            selectedFilter = sender.accessibilityIdentifier!
-            setFadeBackground(forButton: bottomLeftFadeButton, withFilter: selectedFilter)
-            setFadeBackground(forButton: topLeftFadeButton, withFilter: selectedFilter)
-            setFadeBackground(forButton: topRightFadeButton, withFilter: selectedFilter)
-            setFadeBackground(forButton: bottomRightFadeButton, withFilter: selectedFilter)
-            print("Changing fade images!")
-        }
+    func createArraysForTableViews() {
+        listOfFilters = filtersDataStore.getListOfFilters()
+        listOfModes = modesDataStore.getListOfModes()
     }
     
     @objc func fadeButtonpressed(sender : UIButton) {
