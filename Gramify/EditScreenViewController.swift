@@ -21,6 +21,8 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     let imageConverter = ImageConverter()
     let filtersDataStore = FiltersDataStore()
     let modesDataStore = ModesDataStore()
+    
+    var currentModeIndex = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,12 +103,18 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        let reuseIdentifier = getReuseIdentifier(forCollectionView: collectionView)
+        let reuseIdentifier = getCellReuseIdentifier(forCollectionView: collectionView)
         let listOfItems = getListOfItems(forCollectionView: collectionView)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath)
         
         let currentItem = listOfItems[indexPath.item] as! Dictionary<String, Any>
-        let imageName = currentItem["imageFileName"] as! String
+        var imageName : String
+        
+        if collectionView === modeSelectCollectionView, currentModeIndex == indexPath.item {
+            imageName = currentItem["selectedImageName"] as! String
+        } else {
+            imageName = currentItem["defaultImageName"] as! String
+        }
         
         let cellImageView = UIImageView()
         cellImageView.image = UIImage(named: imageName)
@@ -130,7 +138,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         return frame
     }
     
-    func getReuseIdentifier(forCollectionView collectionView : UICollectionView) -> String {
+    func getCellReuseIdentifier(forCollectionView collectionView : UICollectionView) -> String {
         if collectionView === modeSelectCollectionView {
             return "modeSelectCell"
         } else if collectionView === editSelectCollectionView {
@@ -142,14 +150,10 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let screenWidth = UIScreen.main.bounds.size.width
-        print("Running!")
-        if collectionView == modeSelectCollectionView {
-            return CGSize(width: screenWidth/3, height: collectionView.bounds.size.height)
-        } else if collectionView == editSelectCollectionView {
-            return CGSize(width: screenWidth/4, height: collectionView.bounds.size.height)
-        } else {
-            return CGSize(width: 0, height: 0)
-        }
+        let listOfItems = getListOfItems(forCollectionView: collectionView)
+        let itemCountAsFloat = CGFloat(listOfItems.count)
+        
+        return CGSize(width: screenWidth/itemCountAsFloat, height: collectionView.bounds.size.height)
         
     }
 

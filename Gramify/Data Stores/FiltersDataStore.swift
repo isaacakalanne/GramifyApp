@@ -11,16 +11,16 @@ import Foundation
 class FiltersDataStore {
     
     let pinkRoses = ["filterName" : "Pink Roses",
-                           "imageFileName" : "pinkRoses"]
+                           "defaultImageName" : "pinkRoses"]
     
     let oceanWave = ["filterName" : "Ocean Wave",
-                           "imageFileName" : "oceanWave"]
+                           "defaultImageName" : "oceanWave"]
     
     let fallingLeaves = ["filterName" : "Falling Leaves",
-                               "imageFileName" : "fallingLeaves"]
+                               "defaultImageName" : "fallingLeaves"]
     
     let nightSky = ["filterName" : "Night Sky",
-                          "imageFileName" : "nightSky"]
+                          "defaultImageName" : "nightSky"]
     
     func getListOfFilters() -> Array<Dictionary<String, Any>> {
         let listOfFilters = [pinkRoses, oceanWave, fallingLeaves, nightSky]
