@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EditScreenViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class EditScreenViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     @IBOutlet weak var imagePreview: UIImageView!
     @IBOutlet weak var editSelectCollectionView: UICollectionView!
@@ -17,8 +17,6 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     var selectedFilter = "pinkRoses"
     var originalImage = UIImage()
     var filteredImage = UIImage()
-    var listOfFilters : Array<Any> = []
-    var listOfModes : Array<Any> = []
     
     let imageConverter = ImageConverter()
     let filtersDataStore = FiltersDataStore()
@@ -30,8 +28,8 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         createImages()
         initialiseImagePreview()
         
-        initialiseModeSelectCollectionView()
-        initialiseEditSelectCollectionView()
+        initialiseCollectionView(modeSelectCollectionView)
+        initialiseCollectionView(editSelectCollectionView)
     }
     
     func createImages() {
@@ -48,14 +46,33 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         }
     }
     
-    func initialiseModeSelectCollectionView() {
-        listOfModes = modesDataStore.getListOfModes()
-        modeSelectCollectionView.reloadData()
+    func initialiseCollectionView(_ collectionView : UICollectionView) {
+        let layout = createLayout(forCollectionView: collectionView)
+        collectionView.collectionViewLayout = layout
+        collectionView.reloadData()
     }
     
-    func initialiseEditSelectCollectionView() {
-        listOfFilters = filtersDataStore.getListOfFilters()
-        editSelectCollectionView.reloadData()
+    func createLayout(forCollectionView collectionView : UICollectionView) -> UICollectionViewFlowLayout {
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        let screenWidth = UIScreen.main.bounds.size.width
+        let listOfItems = getListOfItems(forCollectionView: collectionView)
+        let itemCount = CGFloat(listOfItems.count)
+        
+        layout.itemSize = CGSize(width: screenWidth/itemCount, height: collectionView.bounds.size.height)
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        
+        return layout
+    }
+    
+    func getListOfItems(forCollectionView collectionView : UICollectionView) -> Array<Any> {
+        if collectionView === modeSelectCollectionView {
+            return modesDataStore.getListOfModes()
+        } else if collectionView === editSelectCollectionView {
+            return filtersDataStore.getListOfFilters()
+        } else {
+            return []
+        }
     }
     
     @objc func fadeButtonPressed(sender : UIButton) {
@@ -74,11 +91,9 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == modeSelectCollectionView {
-            print("count is \(listOfModes.count)")
-            return listOfModes.count
+            return modesDataStore.getListOfModes().count
         } else if collectionView == editSelectCollectionView {
-            print("count is \(listOfFilters.count)")
-            return listOfFilters.count
+            return filtersDataStore.getListOfFilters().count
         } else {
             return 0
         }
@@ -100,6 +115,19 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         cell.backgroundColor = UIColor.cyan
 
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let screenWidth = UIScreen.main.bounds.size.width
+        print("Running!")
+        if collectionView == modeSelectCollectionView {
+            return CGSize(width: screenWidth/3, height: collectionView.bounds.size.height)
+        } else if collectionView == editSelectCollectionView {
+            return CGSize(width: screenWidth/4, height: collectionView.bounds.size.height)
+        } else {
+            return CGSize(width: 0, height: 0)
+        }
+        
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
