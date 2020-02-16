@@ -108,15 +108,26 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         let currentItem = listOfItems[indexPath.item] as! Dictionary<String, Any>
         let imageName = currentItem["imageFileName"] as! String
         
-        print("imageFileName is \(imageName)")
         let cellImageView = UIImageView()
         cellImageView.image = UIImage(named: imageName)
-        cellImageView.frame = CGRect(x: 0, y: 0, width: cell.bounds.size.width, height: cell.bounds.size.height)
+        cellImageView.frame = createFrameForImageView(inCell: cell)
         cellImageView.contentMode = .scaleAspectFit
+        
+        if collectionView === editSelectCollectionView {
+            cellImageView.layer.cornerRadius = cellImageView.bounds.size.width / 3
+            cellImageView.clipsToBounds = true
+        }
         
         cell.addSubview(cellImageView)
 
         return cell
+    }
+    
+    func createFrameForImageView(inCell cell : UICollectionViewCell) -> CGRect {
+        let cellWidth = cell.bounds.size.width
+        let cellHeight = cell.bounds.size.height
+        let frame = CGRect(x: cellWidth / 2 - cellHeight / 2, y: 0, width: cellHeight, height: cellHeight)
+        return frame
     }
     
     func getReuseIdentifier(forCollectionView collectionView : UICollectionView) -> String {
