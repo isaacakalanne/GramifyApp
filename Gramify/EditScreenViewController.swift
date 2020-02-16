@@ -101,20 +101,32 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        var reuseIdentifier : String
-        if collectionView == modeSelectCollectionView {
-            reuseIdentifier = "modeSelectCell"
-        } else if collectionView == editSelectCollectionView {
-            reuseIdentifier = "editSelectCell"
-        } else {
-            reuseIdentifier = ""
-        }
-        
+        let reuseIdentifier = getReuseIdentifier(forCollectionView: collectionView)
+        let listOfItems = getListOfItems(forCollectionView: collectionView)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath)
-
-        cell.backgroundColor = UIColor.cyan
+        
+        let currentItem = listOfItems[indexPath.item] as! Dictionary<String, Any>
+        let imageName = currentItem["imageFileName"] as! String
+        
+        print("imageFileName is \(imageName)")
+        let cellImageView = UIImageView()
+        cellImageView.image = UIImage(named: imageName)
+        cellImageView.frame = CGRect(x: 0, y: 0, width: cell.bounds.size.width, height: cell.bounds.size.height)
+        cellImageView.contentMode = .scaleAspectFit
+        
+        cell.addSubview(cellImageView)
 
         return cell
+    }
+    
+    func getReuseIdentifier(forCollectionView collectionView : UICollectionView) -> String {
+        if collectionView === modeSelectCollectionView {
+            return "modeSelectCell"
+        } else if collectionView === editSelectCollectionView {
+            return "editSelectCell"
+        } else {
+            return ""
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

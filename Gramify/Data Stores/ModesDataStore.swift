@@ -11,13 +11,13 @@ import Foundation
 class ModesDataStore {
     
     let filterMode = ["modeName" : "Filter",
-                      "imageFileName" : "flower"]
+                      "imageFileName" : "flowerW"]
     
     let maskMode = ["modeName" : "Mask",
-                    "imageFileName" : "circles"]
+                    "imageFileName" : "circlesW"]
     
     let downloadMode = ["modeName" : "Upload",
-    "imageFileName" : "upload"]
+    "imageFileName" : "uploadW"]
     
     func getListOfModes() -> Array<Dictionary<String, Any>> {
         let listOfModes = [filterMode, maskMode, downloadMode]
