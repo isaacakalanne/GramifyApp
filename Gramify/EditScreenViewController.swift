@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EditScreenViewController: UIViewController {
+class EditScreenViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     @IBOutlet weak var imagePreview: UIImageView!
     @IBOutlet weak var editSelectCollectionView: UICollectionView!
@@ -29,7 +29,9 @@ class EditScreenViewController: UIViewController {
         
         createImages()
         initialiseImagePreview()
-        createArraysForTableViews()
+        
+        initialiseModeSelectCollectionView()
+        initialiseEditSelectCollectionView()
     }
     
     func createImages() {
@@ -46,9 +48,14 @@ class EditScreenViewController: UIViewController {
         }
     }
     
-    func createArraysForTableViews() {
-        listOfFilters = filtersDataStore.getListOfFilters()
+    func initialiseModeSelectCollectionView() {
         listOfModes = modesDataStore.getListOfModes()
+        modeSelectCollectionView.reloadData()
+    }
+    
+    func initialiseEditSelectCollectionView() {
+        listOfFilters = filtersDataStore.getListOfFilters()
+        editSelectCollectionView.reloadData()
     }
     
     @objc func fadeButtonPressed(sender : UIButton) {
@@ -67,8 +74,10 @@ class EditScreenViewController: UIViewController {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == modeSelectCollectionView {
+            print("count is \(listOfModes.count)")
             return listOfModes.count
         } else if collectionView == editSelectCollectionView {
+            print("count is \(listOfFilters.count)")
             return listOfFilters.count
         } else {
             return 0

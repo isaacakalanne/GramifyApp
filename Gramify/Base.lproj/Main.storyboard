@@ -44,6 +44,10 @@
                                         </collectionViewCellContentView>
                                     </collectionViewCell>
                                 </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="41r-zQ-G5s" id="dS5-e4-6Bs"/>
+                                    <outlet property="delegate" destination="41r-zQ-G5s" id="W10-ql-etl"/>
+                                </connections>
                             </collectionView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="f7M-8g-Cfv">
                                 <rect key="frame" x="0.0" y="741" width="414" height="50"/>
@@ -67,6 +71,10 @@
                                         </collectionViewCellContentView>
                                     </collectionViewCell>
                                 </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="41r-zQ-G5s" id="3YD-6B-yeo"/>
+                                    <outlet property="delegate" destination="41r-zQ-G5s" id="9jF-Zh-Zmp"/>
+                                </connections>
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
