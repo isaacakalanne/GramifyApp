@@ -23,10 +23,10 @@
                                 </constraints>
                             </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="phl-zy-G35">
-                                <rect key="frame" x="0.0" y="812" width="414" height="50"/>
+                                <rect key="frame" x="0.0" y="791" width="414" height="50"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="Wy7-5p-Bfi"/>
+                                    <constraint firstAttribute="height" constant="50" id="Odc-rf-NvM"/>
                                 </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="kun-lk-yv3">
                                     <size key="itemSize" width="50" height="50"/>
@@ -50,10 +50,10 @@
                                 </connections>
                             </collectionView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="f7M-8g-Cfv">
-                                <rect key="frame" x="0.0" y="741" width="414" height="50"/>
+                                <rect key="frame" x="0.0" y="720" width="414" height="50"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="ZXs-wV-cWN"/>
+                                    <constraint firstAttribute="height" constant="50" id="NOG-DT-Bf2"/>
                                 </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Asu-tf-iL6">
                                     <size key="itemSize" width="50" height="50"/>
@@ -79,15 +79,15 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="phl-zy-G35" firstAttribute="leading" secondItem="2vU-SG-2Ut" secondAttribute="leading" id="5cp-6c-Qii"/>
                             <constraint firstItem="7FK-ei-WP6" firstAttribute="top" secondItem="2vU-SG-2Ut" secondAttribute="top" constant="21" id="G9C-O9-5U4"/>
                             <constraint firstItem="7FK-ei-WP6" firstAttribute="trailing" secondItem="tYb-mt-glw" secondAttribute="trailingMargin" id="KUb-09-lTb"/>
-                            <constraint firstItem="f7M-8g-Cfv" firstAttribute="trailing" secondItem="phl-zy-G35" secondAttribute="trailing" id="T2V-QI-hpu"/>
                             <constraint firstItem="7FK-ei-WP6" firstAttribute="leading" secondItem="tYb-mt-glw" secondAttribute="leadingMargin" id="TAE-IR-BH8"/>
-                            <constraint firstItem="f7M-8g-Cfv" firstAttribute="leading" secondItem="phl-zy-G35" secondAttribute="leading" id="alc-Zc-Dbf"/>
-                            <constraint firstItem="phl-zy-G35" firstAttribute="top" secondItem="f7M-8g-Cfv" secondAttribute="bottom" constant="21" id="jTc-se-5Pc"/>
-                            <constraint firstItem="phl-zy-G35" firstAttribute="bottom" secondItem="2vU-SG-2Ut" secondAttribute="bottom" id="muE-KN-Ge5"/>
-                            <constraint firstItem="phl-zy-G35" firstAttribute="centerX" secondItem="7FK-ei-WP6" secondAttribute="centerX" id="xx7-Ir-xfI"/>
+                            <constraint firstItem="f7M-8g-Cfv" firstAttribute="leading" secondItem="2vU-SG-2Ut" secondAttribute="leading" id="UZ3-mO-3w7"/>
+                            <constraint firstItem="2vU-SG-2Ut" firstAttribute="bottom" secondItem="phl-zy-G35" secondAttribute="bottom" constant="21" id="V1z-56-sFP"/>
+                            <constraint firstItem="phl-zy-G35" firstAttribute="leading" secondItem="f7M-8g-Cfv" secondAttribute="leading" id="igc-jX-Eal"/>
+                            <constraint firstItem="f7M-8g-Cfv" firstAttribute="centerX" secondItem="7FK-ei-WP6" secondAttribute="centerX" id="uj2-NL-v2u"/>
+                            <constraint firstItem="phl-zy-G35" firstAttribute="top" secondItem="f7M-8g-Cfv" secondAttribute="bottom" constant="21" id="xbs-nk-jFa"/>
+                            <constraint firstItem="phl-zy-G35" firstAttribute="trailing" secondItem="f7M-8g-Cfv" secondAttribute="trailing" id="xf9-X7-kKb"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="2vU-SG-2Ut"/>
                     </view>
