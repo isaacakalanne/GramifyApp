@@ -11,8 +11,9 @@ import UIKit
 class EditScreenViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     @IBOutlet weak var imagePreview: UIImageView!
-    @IBOutlet weak var editSelectCollectionView: UICollectionView!
     @IBOutlet weak var modeSelectCollectionView: UICollectionView!
+    @IBOutlet weak var primaryEditCollectionView: UICollectionView!
+    @IBOutlet weak var secondaryEditCollectionView: UICollectionView!
     
     var selectedFilter = "pinkRoses"
     var originalImage = UIImage()
@@ -31,7 +32,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         initialiseImagePreview()
         
         initialiseCollectionView(modeSelectCollectionView)
-        initialiseCollectionView(editSelectCollectionView)
+        initialiseCollectionView(primaryEditCollectionView)
     }
     
     func createImages() {
@@ -70,7 +71,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     func getListOfItems(forCollectionView collectionView : UICollectionView) -> Array<Any> {
         if collectionView === modeSelectCollectionView {
             return modesDataStore.getListOfModes()
-        } else if collectionView === editSelectCollectionView {
+        } else if collectionView === primaryEditCollectionView {
             return filtersDataStore.getListOfFilters()
         } else {
             return []
@@ -94,7 +95,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == modeSelectCollectionView {
             return modesDataStore.getListOfModes().count
-        } else if collectionView == editSelectCollectionView {
+        } else if collectionView == primaryEditCollectionView {
             return filtersDataStore.getListOfFilters().count
         } else {
             return 0
@@ -121,7 +122,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         cellImageView.frame = createFrameForImageView(inCell: cell)
         cellImageView.contentMode = .scaleAspectFit
         
-        if collectionView === editSelectCollectionView {
+        if collectionView === primaryEditCollectionView {
             cellImageView.layer.cornerRadius = cellImageView.bounds.size.width / 3
             cellImageView.clipsToBounds = true
         }
@@ -141,7 +142,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     func getCellReuseIdentifier(forCollectionView collectionView : UICollectionView) -> String {
         if collectionView === modeSelectCollectionView {
             return "modeSelectCell"
-        } else if collectionView === editSelectCollectionView {
+        } else if collectionView === primaryEditCollectionView {
             return "editSelectCell"
         } else {
             return ""
