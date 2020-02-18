@@ -117,38 +117,16 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         let reuseIdentifier = getCellReuseIdentifier(forCollectionView: collectionView)
-        let listOfItems = getListOfItems(forCollectionView: collectionView)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath)
         
-        var currentItem: Dictionary<String, Any>
-        var imageName : String = ""
         let cellImageView = UIImageView()
-        
-        if collectionView !== secondaryEditCollectionView {
-            
-            currentItem = listOfItems[indexPath.item] as! Dictionary<String, Any>
-            
-            if collectionView === modeSelectCollectionView, currentModeIndex == indexPath.item {
-                imageName = currentItem["selectedImageName"] as! String
-            } else {
-                imageName = currentItem["defaultImageName"] as! String
-            }
-            
-        }
-        
-        cellImageView.frame = createFrameForImageView(inCell: cell)
+        let cellImage = getCellImage(atIndex: indexPath.item, inCollectionView: collectionView)
+        cellImageView.frame = getFrameForImageView(inCell: cell)
         cellImageView.contentMode = .scaleAspectFit
-        
-        if collectionView === secondaryEditCollectionView {
-            let image = listOfItems[indexPath.item] as! UIImage
-            cellImageView.image = image
-        } else {
-            cellImageView.image = UIImage(named: imageName)
-        }
+        cellImageView.image = cellImage
         
         if collectionView !== modeSelectCollectionView {
-            cellImageView.layer.cornerRadius = cellImageView.bounds.size.width / 3
-            cellImageView.clipsToBounds = true
+            roundCornersOfView(cellImageView)
         }
         
         cell.addSubview(cellImageView)
@@ -156,7 +134,40 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         return cell
     }
     
-    func createFrameForImageView(inCell cell : UICollectionViewCell) -> CGRect {
+    func getCellImage(atIndex index : Int, inCollectionView cv : UICollectionView) -> UIImage {
+        
+        var image : UIImage
+        
+        if cv === secondaryEditCollectionView {
+            let listOfItems = getListOfItems(forCollectionView: cv)
+            image = listOfItems[index] as! UIImage
+        } else {
+            let imageName = getCellImageName(atIndex: index, inCollectionView: cv)
+            image = UIImage(named: imageName)!
+        }
+        
+        return image
+    }
+    
+    func getCellImageName(atIndex index : Int, inCollectionView cv : UICollectionView) -> String {
+        var imageName : String
+        let listOfItems = getListOfItems(forCollectionView: cv)
+        
+        if cv === secondaryEditCollectionView {
+            imageName = ""
+        } else {
+            let currentItem = listOfItems[index] as! Dictionary<String, Any>
+            imageName = currentItem["defaultImageName"] as! String
+        }
+        return imageName
+    }
+    
+    func roundCornersOfView(_ view : UIView) {
+        view.layer.cornerRadius = view.bounds.size.width / 3
+        view.clipsToBounds = true
+    }
+    
+    func getFrameForImageView(inCell cell : UICollectionViewCell) -> CGRect {
         let cellWidth = cell.bounds.size.width
         let cellHeight = cell.bounds.size.height
         let frame = CGRect(x: cellWidth / 2 - cellHeight / 2, y: 0, width: cellHeight, height: cellHeight)
@@ -186,6 +197,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Cell index is \(indexPath.item)!")
+        currentModeIndex = indexPath.item
     }
 
 }
