@@ -20,8 +20,9 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     var filteredImage = UIImage()
     
     let imageConverter = ImageConverter()
-    let filtersDataStore = FiltersDataStore()
     let modesDataStore = ModesDataStore()
+    let filtersDataStore = FiltersDataStore()
+    let fadesDataStore = FadesDataStore()
     
     var currentModeIndex = 0
 
@@ -33,6 +34,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         
         initialiseCollectionView(modeSelectCollectionView)
         initialiseCollectionView(primaryEditCollectionView)
+        initialiseCollectionView(secondaryEditCollectionView)
     }
     
     func createImages() {
@@ -58,10 +60,10 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     func createLayout(forCollectionView collectionView : UICollectionView) -> UICollectionViewFlowLayout {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         let screenWidth = UIScreen.main.bounds.size.width
-        let listOfItems = getListOfItems(forCollectionView: collectionView)
-        let itemCount = CGFloat(listOfItems.count)
+        let listOfItemsCount = getListSize(forCollectionView: collectionView)
+        let itemCountAsFloat = CGFloat(listOfItemsCount)
         
-        layout.itemSize = CGSize(width: screenWidth/itemCount, height: collectionView.bounds.size.height)
+        layout.itemSize = CGSize(width: screenWidth/itemCountAsFloat, height: collectionView.bounds.size.height)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         
@@ -73,9 +75,17 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
             return modesDataStore.getListOfModes()
         } else if collectionView === primaryEditCollectionView {
             return filtersDataStore.getListOfFilters()
+        } else if collectionView === secondaryEditCollectionView {
+            return fadesDataStore.getAllFadeImages()
         } else {
             return []
         }
+    }
+    
+    func getListSize(forCollectionView collectionView : UICollectionView) -> Int {
+        let listOfItems = getListOfItems(forCollectionView: collectionView)
+        let count = listOfItems.count
+        return count
     }
     
     @objc func fadeButtonPressed(sender : UIButton) {
@@ -97,7 +107,9 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
             return modesDataStore.getListOfModes().count
         } else if collectionView == primaryEditCollectionView {
             return filtersDataStore.getListOfFilters().count
-        } else {
+        } else if collectionView == secondaryEditCollectionView {
+            return fadesDataStore.getAllFadeImages().count
+       } else {
             return 0
         }
     }
@@ -108,21 +120,33 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         let listOfItems = getListOfItems(forCollectionView: collectionView)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath)
         
-        let currentItem = listOfItems[indexPath.item] as! Dictionary<String, Any>
-        var imageName : String
+        var currentItem: Dictionary<String, Any>
+        var imageName : String = ""
+        let cellImageView = UIImageView()
         
-        if collectionView === modeSelectCollectionView, currentModeIndex == indexPath.item {
-            imageName = currentItem["selectedImageName"] as! String
-        } else {
-            imageName = currentItem["defaultImageName"] as! String
+        if collectionView !== secondaryEditCollectionView {
+            
+            currentItem = listOfItems[indexPath.item] as! Dictionary<String, Any>
+            
+            if collectionView === modeSelectCollectionView, currentModeIndex == indexPath.item {
+                imageName = currentItem["selectedImageName"] as! String
+            } else {
+                imageName = currentItem["defaultImageName"] as! String
+            }
+            
         }
         
-        let cellImageView = UIImageView()
-        cellImageView.image = UIImage(named: imageName)
         cellImageView.frame = createFrameForImageView(inCell: cell)
         cellImageView.contentMode = .scaleAspectFit
         
-        if collectionView === primaryEditCollectionView {
+        if collectionView === secondaryEditCollectionView {
+            let image = listOfItems[indexPath.item] as! UIImage
+            cellImageView.image = image
+        } else {
+            cellImageView.image = UIImage(named: imageName)
+        }
+        
+        if collectionView !== modeSelectCollectionView {
             cellImageView.layer.cornerRadius = cellImageView.bounds.size.width / 3
             cellImageView.clipsToBounds = true
         }
@@ -143,16 +167,18 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         if collectionView === modeSelectCollectionView {
             return "modeSelectCell"
         } else if collectionView === primaryEditCollectionView {
-            return "editSelectCell"
-        } else {
+            return "primaryEditCell"
+        } else if collectionView === secondaryEditCollectionView {
+           return "secondaryEditCell"
+       } else {
             return ""
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let screenWidth = UIScreen.main.bounds.size.width
-        let listOfItems = getListOfItems(forCollectionView: collectionView)
-        let itemCountAsFloat = CGFloat(listOfItems.count)
+        let listOfItemsCount = getListSize(forCollectionView: collectionView)
+        let itemCountAsFloat = CGFloat(listOfItemsCount)
         
         return CGSize(width: screenWidth/itemCountAsFloat, height: collectionView.bounds.size.height)
         

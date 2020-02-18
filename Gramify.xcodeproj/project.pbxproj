@@ -19,6 +19,7 @@
 		11EEDED323F8A7DE0006C851 /* FiltersDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EEDED223F8A7DE0006C851 /* FiltersDataStore.swift */; };
 		11EEDED523F8A9CC0006C851 /* ModesDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EEDED423F8A9CC0006C851 /* ModesDataStore.swift */; };
 		11EEDED723F985020006C851 /* ImageConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EEDED623F985020006C851 /* ImageConverter.swift */; };
+		11EEDEDE23FC2A7C0006C851 /* FadesDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EEDEDD23FC2A7C0006C851 /* FadesDataStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		11EEDED223F8A7DE0006C851 /* FiltersDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersDataStore.swift; sourceTree = "<group>"; };
 		11EEDED423F8A9CC0006C851 /* ModesDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModesDataStore.swift; sourceTree = "<group>"; };
 		11EEDED623F985020006C851 /* ImageConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageConverter.swift; sourceTree = "<group>"; };
+		11EEDEDD23FC2A7C0006C851 /* FadesDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FadesDataStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +144,7 @@
 		11EEDED823F988FF0006C851 /* Data Stores */ = {
 			isa = PBXGroup;
 			children = (
+				11EEDEDD23FC2A7C0006C851 /* FadesDataStore.swift */,
 				11EEDED223F8A7DE0006C851 /* FiltersDataStore.swift */,
 				11EEDED423F8A9CC0006C851 /* ModesDataStore.swift */,
 			);
@@ -280,6 +283,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1176793723E1B8550037E6F5 /* AppDelegate.swift in Sources */,
+				11EEDEDE23FC2A7C0006C851 /* FadesDataStore.swift in Sources */,
 				11EEDED723F985020006C851 /* ImageConverter.swift in Sources */,
 				110275D723E9B9C00036F580 /* EditScreenViewController.swift in Sources */,
 				11EEDED523F8A9CC0006C851 /* ModesDataStore.swift in Sources */,
