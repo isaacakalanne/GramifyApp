@@ -17,10 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7FK-ei-WP6">
-                                <rect key="frame" x="20" y="65" width="374" height="464"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="464" id="Sjg-VS-145"/>
-                                </constraints>
+                                <rect key="frame" x="20" y="65" width="374" height="578"/>
                             </imageView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="phl-zy-G35">
                                 <rect key="frame" x="0.0" y="791" width="414" height="50"/>
@@ -106,16 +103,17 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="7FK-ei-WP6" firstAttribute="trailing" secondItem="tYb-mt-glw" secondAttribute="trailingMargin" id="1Gk-Ja-zrt"/>
+                            <constraint firstItem="7FK-ei-WP6" firstAttribute="top" secondItem="2vU-SG-2Ut" secondAttribute="top" constant="21" id="Aaz-M4-5B2"/>
                             <constraint firstItem="boT-6T-wWF" firstAttribute="trailing" secondItem="f7M-8g-Cfv" secondAttribute="trailing" id="BuH-8V-ZLZ"/>
-                            <constraint firstItem="7FK-ei-WP6" firstAttribute="top" secondItem="2vU-SG-2Ut" secondAttribute="top" constant="21" id="G9C-O9-5U4"/>
-                            <constraint firstItem="7FK-ei-WP6" firstAttribute="trailing" secondItem="tYb-mt-glw" secondAttribute="trailingMargin" id="KUb-09-lTb"/>
+                            <constraint firstItem="7FK-ei-WP6" firstAttribute="centerX" secondItem="boT-6T-wWF" secondAttribute="centerX" id="FGj-d0-Sxn"/>
+                            <constraint firstItem="boT-6T-wWF" firstAttribute="top" secondItem="7FK-ei-WP6" secondAttribute="bottom" constant="16" id="Oij-pb-eb6"/>
                             <constraint firstItem="f7M-8g-Cfv" firstAttribute="top" secondItem="boT-6T-wWF" secondAttribute="bottom" constant="16" id="P1r-Gb-YAL"/>
-                            <constraint firstItem="7FK-ei-WP6" firstAttribute="leading" secondItem="tYb-mt-glw" secondAttribute="leadingMargin" id="TAE-IR-BH8"/>
                             <constraint firstItem="f7M-8g-Cfv" firstAttribute="leading" secondItem="2vU-SG-2Ut" secondAttribute="leading" id="UZ3-mO-3w7"/>
                             <constraint firstItem="2vU-SG-2Ut" firstAttribute="bottom" secondItem="phl-zy-G35" secondAttribute="bottom" constant="21" id="V1z-56-sFP"/>
                             <constraint firstItem="boT-6T-wWF" firstAttribute="leading" secondItem="f7M-8g-Cfv" secondAttribute="leading" id="aJ7-kW-LWP"/>
                             <constraint firstItem="phl-zy-G35" firstAttribute="leading" secondItem="f7M-8g-Cfv" secondAttribute="leading" id="igc-jX-Eal"/>
-                            <constraint firstItem="f7M-8g-Cfv" firstAttribute="centerX" secondItem="7FK-ei-WP6" secondAttribute="centerX" id="uj2-NL-v2u"/>
+                            <constraint firstItem="7FK-ei-WP6" firstAttribute="leading" secondItem="tYb-mt-glw" secondAttribute="leadingMargin" id="rgi-a3-T0F"/>
                             <constraint firstItem="phl-zy-G35" firstAttribute="top" secondItem="f7M-8g-Cfv" secondAttribute="bottom" constant="16" id="xbs-nk-jFa"/>
                             <constraint firstItem="phl-zy-G35" firstAttribute="trailing" secondItem="f7M-8g-Cfv" secondAttribute="trailing" id="xf9-X7-kKb"/>
                         </constraints>

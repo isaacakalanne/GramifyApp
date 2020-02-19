@@ -19,8 +19,8 @@ class ModesDataStore {
                     "selectedImageName" : "circlesB"]
     
     let downloadMode = ["modeName" : "Upload",
-    "defaultImageName" : "uploadW",
-    "selectedImageName" : "uploadB"]
+                        "defaultImageName" : "uploadW",
+                        "selectedImageName" : "uploadB"]
     
     func getListOfModes() -> Array<Dictionary<String, Any>> {
         let listOfModes = [filterMode, maskMode, downloadMode]
