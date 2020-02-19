@@ -76,7 +76,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         } else if collectionView === primaryEditCollectionView {
             return filtersDataStore.getListOfFilters()
         } else if collectionView === secondaryEditCollectionView {
-            return fadesDataStore.getAllFadeImages()
+            return fadesDataStore.getListOfFlippedImages()
         } else {
             return []
         }
@@ -108,7 +108,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         } else if collectionView == primaryEditCollectionView {
             return filtersDataStore.getListOfFilters().count
         } else if collectionView == secondaryEditCollectionView {
-            return fadesDataStore.getAllFadeImages().count
+            return fadesDataStore.getListOfFlippedImages().count
        } else {
             return 0
         }

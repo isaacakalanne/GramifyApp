@@ -11,16 +11,17 @@ import UIKit
 
 class FadesDataStore {
     
-    let fadeBottomRight = UIImage(named: "blackFade")
+    var fadeBottomRight = UIImage(named: "blackFade")
+    var fadeBottomLeft = UIImage(named: "blackFade")
+    var fadeTopLeft = UIImage(named: "blackFade")
+    var fadeTopRight = UIImage(named: "blackFade")
     
-    let fadeBottomLeft = UIImage(named: "blackFade")
-    
-    let fadeTopLeft = UIImage(named: "blackFade")
-    
-    let fadeTopRight = UIImage(named: "blackFade")
-    
-    func getAllFadeImages() -> [UIImage] {
-        let listOfImages : Array<UIImage> = [fadeBottomRight!, fadeBottomLeft!, fadeTopLeft!, fadeTopRight!]
+    func getListOfFlippedImages() -> Array<UIImage> {
+        fadeBottomRight = UIImage(cgImage: (fadeBottomLeft?.cgImage)!, scale: 1.0, orientation: .up)
+        fadeTopRight = UIImage(cgImage: (fadeTopRight?.cgImage)!, scale: 1.0, orientation: .left)
+        fadeTopLeft = UIImage(cgImage: (fadeTopLeft?.cgImage)!, scale: 1.0, orientation: .down)
+        fadeBottomLeft = UIImage(cgImage: (fadeBottomLeft?.cgImage)!, scale: 1.0, orientation: .right)
+        let listOfImages : Array<UIImage> = [fadeBottomRight!, fadeTopRight!, fadeTopLeft!, fadeBottomLeft!]
         return listOfImages
     }
     
