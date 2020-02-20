@@ -22,7 +22,7 @@ class ModesDataStore {
                         "defaultImageName" : "uploadW",
                         "selectedImageName" : "uploadB"]
     
-    func getListOfModes() -> Array<Dictionary<String, Any>> {
+    func getListOfModes() -> Array<[String : Any]> {
         let listOfModes = [filterMode, maskMode, downloadMode]
         return listOfModes
     }

@@ -21,8 +21,13 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     
     let imageConverter = ImageConverter()
     let modesDataStore = ModesDataStore()
+    var listOfModes : Array<[String : Any]> = []
+    
     let filtersDataStore = FiltersDataStore()
+    var listOfFilters : Array<[String : Any]> = []
+    
     let fadesDataStore = FadesDataStore()
+    var listOfFades : Array<[String : Any]> = []
     
     var currentModeIndex = 0
     var currentFilterIndex = 0
@@ -33,6 +38,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         createImages()
         initialiseImagePreview()
         
+        initialiseListsOfItems()
         initialiseCollectionView(modeSelectCollectionView)
         initialiseCollectionView(primaryEditCollectionView)
         initialiseCollectionView(secondaryEditCollectionView)
@@ -61,8 +67,9 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     func createLayout(forCollectionView collectionView : UICollectionView) -> UICollectionViewFlowLayout {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         let screenWidth = UIScreen.main.bounds.size.width
-        let listOfItemsCount = getListSize(forCollectionView: collectionView)
-        let itemCountAsFloat = CGFloat(listOfItemsCount)
+        
+        let itemCount = getListSize(forCollectionView: collectionView)
+        let itemCountAsFloat = CGFloat(itemCount)
         
         layout.itemSize = CGSize(width: screenWidth/itemCountAsFloat, height: collectionView.bounds.size.height)
         layout.minimumInteritemSpacing = 0
@@ -71,13 +78,19 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         return layout
     }
     
+    func initialiseListsOfItems() {
+        listOfModes = modesDataStore.getListOfModes()
+        listOfFilters = filtersDataStore.getListOfFilters()
+        listOfFades = fadesDataStore.getListOfBlackFadeDictionaries()
+    }
+    
     func getListOfItems(forCollectionView collectionView : UICollectionView) -> Array<Any> {
         if collectionView === modeSelectCollectionView {
-            return modesDataStore.getListOfModes()
+            return listOfModes
         } else if collectionView === primaryEditCollectionView {
-            return filtersDataStore.getListOfFilters()
+            return listOfFilters
         } else if collectionView === secondaryEditCollectionView {
-            return fadesDataStore.getListOfBlackFadeDictionaries()
+            return listOfFades
         } else {
             return []
         }

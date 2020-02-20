@@ -26,7 +26,7 @@ class FiltersDataStore {
                           "defaultImageName" : "nightSky",
                           "blackFadePosition" : Origin.topLeft()] as [String : Any]
     
-    func getListOfFilters() -> Array<Dictionary<String, Any>> {
+    func getListOfFilters() -> Array<[String : Any]> {
         let listOfFilters = [pinkRoses, oceanWave, fallingLeaves, nightSky]
         return listOfFilters
     }
