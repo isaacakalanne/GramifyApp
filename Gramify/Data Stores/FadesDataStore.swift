@@ -11,18 +11,27 @@ import UIKit
 
 class FadesDataStore {
     
-    var fadeBottomRight = UIImage(named: "blackFade")
-    var fadeBottomLeft = UIImage(named: "blackFade")
-    var fadeTopLeft = UIImage(named: "blackFade")
-    var fadeTopRight = UIImage(named: "blackFade")
-    
-    func getListOfFlippedImages() -> Array<UIImage> {
-        fadeBottomRight = UIImage(cgImage: (fadeBottomLeft?.cgImage)!, scale: 1.0, orientation: .up)
-        fadeTopRight = UIImage(cgImage: (fadeTopRight?.cgImage)!, scale: 1.0, orientation: .left)
-        fadeTopLeft = UIImage(cgImage: (fadeTopLeft?.cgImage)!, scale: 1.0, orientation: .down)
-        fadeBottomLeft = UIImage(cgImage: (fadeBottomLeft?.cgImage)!, scale: 1.0, orientation: .right)
-        let listOfImages : Array<UIImage> = [fadeBottomRight!, fadeTopRight!, fadeTopLeft!, fadeBottomLeft!]
-        return listOfImages
+    func getListOfBlackFadeDictionaries() -> Array<[String : Any]> {
+        let blackFadeImage = UIImage(named: "blackFade")
+        
+        let bottomRightImage = UIImage(cgImage: (blackFadeImage?.cgImage)!, scale: 1.0, orientation: .up)
+        let blackFadeBottomRight = ["image" : bottomRightImage,
+                                    "origin" : Origin.bottomRight()] as [String : Any]
+        
+        let topRightImage = UIImage(cgImage: (blackFadeImage?.cgImage)!, scale: 1.0, orientation: .left)
+        let blackFadeTopRight = ["image" : topRightImage,
+                                 "origin" : Origin.topRight()] as [String : Any]
+        
+        let topLeftImage = UIImage(cgImage: (blackFadeImage?.cgImage)!, scale: 1.0, orientation: .down)
+        let blackFadeTopLeft = ["image" : topLeftImage,
+                                 "origin" : Origin.topLeft()] as [String : Any]
+        
+        let bottomLeftImage = UIImage(cgImage: (blackFadeImage?.cgImage)!, scale: 1.0, orientation: .right)
+        let blackFadeBottomLeft = ["image" : bottomLeftImage,
+                                 "origin" : Origin.topLeft()] as [String : Any]
+        
+        let listOfBlackFades : Array<[String : Any]> = [blackFadeBottomRight, blackFadeTopRight, blackFadeTopLeft, blackFadeBottomLeft]
+        return listOfBlackFades
     }
     
 }

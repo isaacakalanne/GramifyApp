@@ -25,6 +25,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     let fadesDataStore = FadesDataStore()
     
     var currentModeIndex = 0
+    var currentFilterIndex = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,7 +77,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         } else if collectionView === primaryEditCollectionView {
             return filtersDataStore.getListOfFilters()
         } else if collectionView === secondaryEditCollectionView {
-            return fadesDataStore.getListOfFlippedImages()
+            return fadesDataStore.getListOfBlackFadeDictionaries()
         } else {
             return []
         }
@@ -108,7 +109,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         } else if collectionView == primaryEditCollectionView {
             return filtersDataStore.getListOfFilters().count
         } else if collectionView == secondaryEditCollectionView {
-            return fadesDataStore.getListOfFlippedImages().count
+            return fadesDataStore.getListOfBlackFadeDictionaries().count
        } else {
             return 0
         }
@@ -140,7 +141,8 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         
         if cv === secondaryEditCollectionView {
             let listOfItems = getListOfItems(forCollectionView: cv)
-            image = listOfItems[index] as! UIImage
+            let item = listOfItems[index] as! [String : Any]
+            image = item["image"] as! UIImage
         } else {
             let imageName = getCellImageName(atIndex: index, inCollectionView: cv)
             image = UIImage(named: imageName)!
@@ -197,7 +199,11 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Cell index is \(indexPath.item)!")
-        currentModeIndex = indexPath.item
+        if collectionView === primaryEditCollectionView {
+            currentFilterIndex = indexPath.item
+        } else if collectionView === modeSelectCollectionView {
+            currentModeIndex = indexPath.item
+        }
     }
 
 }
