@@ -70,36 +70,12 @@ class ImageConverter {
             completion(imageWithFilter)
     }
     
-    func rotateImage(_ image : UIImage, byDegrees degrees: Float) -> UIImage {
-        
-        let radians = degrees * (Float.pi / 180)
-        var newSize = CGRect(origin: CGPoint.zero, size: image.size).applying(CGAffineTransform(rotationAngle: CGFloat(radians))).size
-        // Trim off the extremely small float value to prevent core graphics from rounding it up
-        newSize.width = floor(newSize.width)
-        newSize.height = floor(newSize.height)
-
-        UIGraphicsBeginImageContextWithOptions(newSize, false, image.scale)
-        let context = UIGraphicsGetCurrentContext()!
-
-        // Move origin to middle
-        context.translateBy(x: newSize.width/2, y: newSize.height/2)
-        // Rotate around middle
-        context.rotate(by: CGFloat(radians))
-        // Draw the image at its center
-        image.draw(in: CGRect(x: -image.size.width/2, y: -image.size.height/2, width: image.size.width, height: image.size.height))
-
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-
-        return newImage!
-    }
-    
     func flipImageWithScale(xScale : CGFloat, yScale : CGFloat, image : UIImage) -> UIImage? {
         UIGraphicsBeginImageContextWithOptions(image.size, false, image.scale)
         let bitmap = UIGraphicsGetCurrentContext()!
         
         bitmap.translateBy(x: image.size.width / 2, y: image.size.height / 2)
-        bitmap.scaleBy(x: xScale, y: yScale) // Add and remove '-' modifier for scale to flip image around axes
+        bitmap.scaleBy(x: xScale, y: yScale)
         bitmap.translateBy(x: -image.size.width / 2, y: -image.size.height / 2)
         
         let cgImage = convertImageToCGImage(image)!

@@ -32,7 +32,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     var originalFilterImage = UIImage()
     
     let fadesDataStore = FadesDataStore()
-    var listOfFades : Array<[String : Any]> = []
+    var listOfFades : Array<UIImage> = []
     
     var currentModeIndex = 0
     var currentFilterIndex = 0
@@ -159,9 +159,8 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         var image : UIImage
         
         if cv === secondaryEditCollectionView {
-            let listOfItems = getListOfItems(forCollectionView: cv)
-            let item = listOfItems[index] as! [String : Any]
-            image = item["image"] as! UIImage
+            let listOfImages = getListOfItems(forCollectionView: cv)
+            image = listOfImages[index] as! UIImage
         } else {
             let imageName = getCellImageName(atIndex: index, inCollectionView: cv)
             image = UIImage(named: imageName)!
