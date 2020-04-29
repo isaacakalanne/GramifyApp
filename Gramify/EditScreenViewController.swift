@@ -30,6 +30,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     let filterMenuButtonData = FilterMenuButtonData()
     var listOfFilters : Array<[String : Any]> = []
     var originalFilterImage = UIImage()
+    var filterStyle = "CILinearDodgeBlendMode"
     
     var currentModeIndex = 0
     var currentFilterIndex = 0
@@ -108,7 +109,8 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         let fadeDirection = sender.accessibilityIdentifier!
         let filterName = "\(selectedFilter + fadeDirection)"
         var filterImage = UIImage(named: filterName)
-        filterImage = imageConverter.resizeImage(filterImage: filterImage!, toSizeOfImage: originalImage)
+        
+        filterImage = imageConverter.resizeImage(filterImage!, toSizeOfImage: originalImage)
         imageConverter.applyFilter("CILinearDodgeBlendMode", toImage: self.originalImage, withFilterImage: filterImage!) { filteredImage in
             
             UIView.animate(withDuration: 0.4) {
@@ -228,10 +230,13 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     func applyFilter() {
-        
         let filterImage = getFilterImage()!
         let blackFadeImage = UIImage(named: "blackFade")!
-        overlayImage(filterImage, withImage: blackFadeImage)
+        
+        imageConverter.applyFilter("CISourceOverCompositing", toImage: filterImage, withFilterImage: blackFadeImage) { filterImage in
+            
+            self.filterUserImage(self.originalImage, andFilterImage: filterImage)
+        }
         
     }
     
@@ -243,22 +248,15 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         return filterImage
     }
     
-    func overlayImage(_ image : UIImage, withImage overlayImage : UIImage) {
-        imageConverter.applyFilter("CISourceOverCompositing", toImage: image, withFilterImage: overlayImage) { filterImage in
-            
-            self.filterUserImage(self.originalImage, withFilterType: "CILinearDodgeBlendMode", andFilterImage: filterImage)
-        }
-    }
-    
-    func filterUserImage(_ image : UIImage, withFilterType filterName : String, andFilterImage filterImage : UIImage) {
+    func filterUserImage(_ image : UIImage, andFilterImage filterImage : UIImage) {
         
         let scale = getScaleForFilterImageFlipping(forIndex: fadeDirectionIndex)
         
         let flippedFilterImage = imageConverter.flipImageWithScale(xScale: scale.x, yScale: scale.y, image: filterImage)!
         
-        let resizedImage = imageConverter.resizeImage(filterImage: flippedFilterImage, toSizeOfImage: image)
+        let resizedImage = imageConverter.resizeImage(flippedFilterImage, toSizeOfImage: image)
         
-        imageConverter.applyFilter(filterName, toImage: self.originalImage, withFilterImage: resizedImage, completion: { filteredImage in
+        imageConverter.applyFilter(filterStyle, toImage: self.originalImage, withFilterImage: resizedImage, completion: { filteredImage in
             
             self.filteredImage = filteredImage
             self.imagePreview.image = self.filteredImage

@@ -11,9 +11,9 @@ import UIKit
 
 class ImageConverter {
     
-    func resizeImage(filterImage : UIImage , toSizeOfImage userImage : UIImage) -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(userImage.size, false, 0.0);
-        filterImage.draw(in: CGRect(origin: CGPoint.zero, size: CGSize(width: userImage.size.width, height: userImage.size.height)))
+    func resizeImage(_ originalImage : UIImage , toSizeOfImage targetImage : UIImage) -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(targetImage.size, false, 0.0);
+        originalImage.draw(in: CGRect(origin: CGPoint.zero, size: CGSize(width: targetImage.size.width, height: targetImage.size.height)))
         let resizedFilterImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         return resizedFilterImage
