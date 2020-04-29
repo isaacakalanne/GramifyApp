@@ -12,19 +12,23 @@ class FiltersDataStore {
     
     let pinkRoses = ["filterName" : "Pink Roses",
                            "defaultImageName" : "pinkRoses",
-                           "blackFadePosition" : Origin.topRight()] as [String : Any]
+                           "blackFadeXPosition" : Origin.topRight().x,
+                           "blackFadeYPosition" : Origin.topRight().y] as [String : Any]
     
     let oceanWave = ["filterName" : "Ocean Wave",
                            "defaultImageName" : "oceanWave",
-                           "blackFadePosition" : Origin.bottomLeft()] as [String : Any]
+                           "blackFadeXPosition" : Origin.bottomLeft().x,
+                           "blackFadeYPosition" : Origin.bottomLeft().y] as [String : Any]
     
     let fallingLeaves = ["filterName" : "Falling Leaves",
                                "defaultImageName" : "fallingLeaves",
-                               "blackFadePosition" : Origin.bottomRight()] as [String : Any]
+                               "blackFadeXPosition" : Origin.bottomRight().x,
+                               "blackFadeYPosition" : Origin.bottomRight().y] as [String : Any]
     
     let nightSky = ["filterName" : "Night Sky",
                           "defaultImageName" : "nightSky",
-                          "blackFadePosition" : Origin.topLeft()] as [String : Any]
+                          "blackFadeXPosition" : Origin.topLeft().x,
+                          "blackFadeYPosition" : Origin.topLeft().y] as [String : Any]
     
     func getListOfFilters() -> Array<[String : Any]> {
         let listOfFilters = [pinkRoses, oceanWave, fallingLeaves, nightSky]

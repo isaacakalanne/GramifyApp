@@ -27,7 +27,7 @@ class ImageConverter {
     //   - Can animate background itself (make the clouds move, make the waves roll, etc)
     //   - Research AI in apps, and available public AI app resources, for detecting objects in images
     
-    func applyFilter(toImage image : UIImage , withFilterImage filterImage : UIImage , completion : @escaping ((_ filteredImage : UIImage) -> Void)) {
+    func applyFilter(_ filterName : String, toImage image : UIImage , withFilterImage filterImage : UIImage , completion : @escaping ((_ filteredImage : UIImage) -> Void)) {
             let originalImage = CIImage(image: image)
             let filterImage = CIImage(image: filterImage)
             
@@ -60,13 +60,62 @@ class ImageConverter {
     //        CISourceOverCompositing
     //        CISubtractBlendMode <------
             
-            let filter = CIFilter(name: "CILinearDodgeBlendMode")
+//            let filter = CIFilter(name: "CILinearDodgeBlendMode")
+            let filter = CIFilter(name: filterName)
             filter?.setValue(originalImage, forKey: "inputBackgroundImage")
             filter?.setValue(filterImage, forKey: "inputImage")
             
             let imageRef = (filter?.outputImage!.cropped(to: (filter?.outputImage!.extent)!))!
             let imageWithFilter = UIImage(ciImage: imageRef, scale: image.scale, orientation: image.imageOrientation)
             completion(imageWithFilter)
-        }
+    }
+    
+    func rotateImage(_ image : UIImage, byDegrees degrees: Float) -> UIImage {
+        
+        let radians = degrees * (Float.pi / 180)
+        var newSize = CGRect(origin: CGPoint.zero, size: image.size).applying(CGAffineTransform(rotationAngle: CGFloat(radians))).size
+        // Trim off the extremely small float value to prevent core graphics from rounding it up
+        newSize.width = floor(newSize.width)
+        newSize.height = floor(newSize.height)
+
+        UIGraphicsBeginImageContextWithOptions(newSize, false, image.scale)
+        let context = UIGraphicsGetCurrentContext()!
+
+        // Move origin to middle
+        context.translateBy(x: newSize.width/2, y: newSize.height/2)
+        // Rotate around middle
+        context.rotate(by: CGFloat(radians))
+        // Draw the image at its center
+        image.draw(in: CGRect(x: -image.size.width/2, y: -image.size.height/2, width: image.size.width, height: image.size.height))
+
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return newImage!
+    }
+    
+    func flipImageWithScale(xScale : CGFloat, yScale : CGFloat, image : UIImage) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(image.size, false, image.scale)
+        let bitmap = UIGraphicsGetCurrentContext()!
+        
+        bitmap.translateBy(x: image.size.width / 2, y: image.size.height / 2)
+        bitmap.scaleBy(x: xScale, y: yScale) // Add and remove '-' modifier for scale to flip image around axes
+        bitmap.translateBy(x: -image.size.width / 2, y: -image.size.height / 2)
+        
+        let cgImage = convertImageToCGImage(image)!
+        
+        bitmap.draw(cgImage, in: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
+
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return newImage
+    }
+
+    func convertImageToCGImage(_ image : UIImage) -> CGImage! {
+        let context = CIContext()
+        let filteredCGImage = context.createCGImage(image.ciImage!, from: image.ciImage!.extent)
+        return filteredCGImage
+    }
     
 }

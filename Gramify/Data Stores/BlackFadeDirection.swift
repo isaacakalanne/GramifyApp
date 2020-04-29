@@ -10,19 +10,19 @@ import Foundation
 
 struct Origin {
     struct bottomRight {
-        let x = "right"
         let y = "bottom"
+        let x = "right"
     }
     struct topRight {
-        let x = "right"
         let y = "top"
+        let x = "right"
     }
     struct topLeft {
-        let x = "left"
         let y = "top"
+        let x = "left"
     }
     struct bottomLeft {
-        let x = "left"
         let y = "bottom"
+        let x = "left"
     }
 }

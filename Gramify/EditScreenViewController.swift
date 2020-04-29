@@ -15,6 +15,10 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     @IBOutlet weak var primaryEditCollectionView: UICollectionView!
     @IBOutlet weak var secondaryEditCollectionView: UICollectionView!
     
+    let modeSelectCellIdentifier = "modeSelectCell"
+    let primaryEditCellIdentifier = "primaryEditCell"
+    let secondaryEditCellIdentifier = "secondaryEditCell"
+    
     var selectedFilter = "pinkRoses"
     var originalImage = UIImage()
     var filteredImage = UIImage()
@@ -25,12 +29,14 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     
     let filtersDataStore = FiltersDataStore()
     var listOfFilters : Array<[String : Any]> = []
+    var originalFilterImage = UIImage()
     
     let fadesDataStore = FadesDataStore()
     var listOfFades : Array<[String : Any]> = []
     
     var currentModeIndex = 0
     var currentFilterIndex = 0
+    var fadeDirectionIndex = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,7 +113,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         let filterName = "\(selectedFilter + fadeDirection)"
         var filterImage = UIImage(named: filterName)
         filterImage = imageConverter.resizeImage(filterImage: filterImage!, toSizeOfImage: originalImage)
-        imageConverter.applyFilter(toImage: self.originalImage, withFilterImage: filterImage!) { filteredImage in
+        imageConverter.applyFilter("CILinearDodgeBlendMode", toImage: self.originalImage, withFilterImage: filterImage!) { filteredImage in
             
             UIView.animate(withDuration: 0.4) {
                 self.imagePreview.image = filteredImage // This doesn't currently correctly animate the transition
@@ -191,11 +197,11 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     
     func getCellReuseIdentifier(forCollectionView collectionView : UICollectionView) -> String {
         if collectionView === modeSelectCollectionView {
-            return "modeSelectCell"
+            return modeSelectCellIdentifier
         } else if collectionView === primaryEditCollectionView {
-            return "primaryEditCell"
+            return primaryEditCellIdentifier
         } else if collectionView === secondaryEditCollectionView {
-           return "secondaryEditCell"
+           return secondaryEditCellIdentifier
        } else {
             return ""
         }
@@ -211,11 +217,78 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Cell index is \(indexPath.item)!")
-        if collectionView === primaryEditCollectionView {
+        
+        if collectionView === secondaryEditCollectionView {
+            
+            fadeDirectionIndex = indexPath.item
+            applyFilter(withFilterImageIndex: currentFilterIndex, andFadeDirectionIndex: fadeDirectionIndex)
+            
+        } else if collectionView === primaryEditCollectionView {
+            
             currentFilterIndex = indexPath.item
+            
         } else if collectionView === modeSelectCollectionView {
+            
             currentModeIndex = indexPath.item
+            
+        }
+        
+    }
+    
+    func applyFilter(withFilterImageIndex filterIndex : Int, andFadeDirectionIndex fadeIndex : Int) {
+        
+        let filterImage = getFilterImage(atIndex: filterIndex)!
+        let blackFadeImage = UIImage(named: "blackFade")!
+        
+        overlayImage(filterImage, withImage: blackFadeImage, andFadeDirectionIndex: fadeIndex)
+        
+    }
+    
+    func getFilterImage(atIndex index : Int) -> UIImage? {
+        let filterImageData = listOfFilters[index]
+        let filterImageName = filterImageData["defaultImageName"] as! String
+        let filterImage = UIImage(named: filterImageName)!
+        
+        return filterImage
+    }
+    
+    func overlayImage(_ image : UIImage, withImage overlayImage : UIImage, andFadeDirectionIndex fadeIndex : Int) {
+        imageConverter.applyFilter("CISourceOverCompositing", toImage: image, withFilterImage: overlayImage) { filterImage in
+            
+            self.filterUserImage(self.originalImage, withFilterType: "CILinearDodgeBlendMode", andFilterImage: filterImage)
+        }
+    }
+    
+    func filterUserImage(_ image : UIImage, withFilterType filterName : String, andFilterImage filterImage : UIImage) {
+        
+        let scale = getScaleForFilterImageFlipping()
+        
+        let flippedFilterImage = imageConverter.flipImageWithScale(xScale: scale.x, yScale: scale.y, image: filterImage)!
+        
+        let resizedImage = imageConverter.resizeImage(filterImage: flippedFilterImage, toSizeOfImage: image)
+        
+        imageConverter.applyFilter(filterName, toImage: self.originalImage, withFilterImage: resizedImage, completion: { filteredImage in
+            
+            self.filteredImage = filteredImage
+            self.imagePreview.image = self.filteredImage
+            
+            print("Done!")
+            
+        })
+    }
+    
+    func getScaleForFilterImageFlipping() -> (x: CGFloat, y: CGFloat) {
+        switch fadeDirectionIndex {
+        case 0:
+            return (x: -1, y: 1)
+        case 1:
+            return (x: -1, y: -1)
+        case 2:
+            return (x: 1, y: -1)
+        case 3:
+            return (x: 1, y: 1)
+        default:
+            return (x: 1, y: 1)
         }
     }
 
