@@ -16,10 +16,9 @@
 		1176794E23E1B85C0037E6F5 /* GramifyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1176794D23E1B85C0037E6F5 /* GramifyTests.swift */; };
 		1176795923E1B85C0037E6F5 /* GramifyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1176795823E1B85C0037E6F5 /* GramifyUITests.swift */; };
 		1191A3DD23E3164E00605699 /* NetworkProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1176796A23E3135F0037E6F5 /* NetworkProcessor.swift */; };
-		11EEDED323F8A7DE0006C851 /* FiltersDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EEDED223F8A7DE0006C851 /* FiltersDataStore.swift */; };
-		11EEDED523F8A9CC0006C851 /* ModesDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EEDED423F8A9CC0006C851 /* ModesDataStore.swift */; };
+		11EEDED323F8A7DE0006C851 /* FilterMenuButtonData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EEDED223F8A7DE0006C851 /* FilterMenuButtonData.swift */; };
+		11EEDED523F8A9CC0006C851 /* ModeMenuButtonData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EEDED423F8A9CC0006C851 /* ModeMenuButtonData.swift */; };
 		11EEDED723F985020006C851 /* ImageConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EEDED623F985020006C851 /* ImageConverter.swift */; };
-		11EEDEE023FD872C0006C851 /* BlackFadeDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EEDEDF23FD872B0006C851 /* BlackFadeDirection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,10 +54,9 @@
 		1176795823E1B85C0037E6F5 /* GramifyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GramifyUITests.swift; sourceTree = "<group>"; };
 		1176795A23E1B85C0037E6F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1176796A23E3135F0037E6F5 /* NetworkProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProcessor.swift; sourceTree = "<group>"; };
-		11EEDED223F8A7DE0006C851 /* FiltersDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersDataStore.swift; sourceTree = "<group>"; };
-		11EEDED423F8A9CC0006C851 /* ModesDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModesDataStore.swift; sourceTree = "<group>"; };
+		11EEDED223F8A7DE0006C851 /* FilterMenuButtonData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterMenuButtonData.swift; sourceTree = "<group>"; };
+		11EEDED423F8A9CC0006C851 /* ModeMenuButtonData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeMenuButtonData.swift; sourceTree = "<group>"; };
 		11EEDED623F985020006C851 /* ImageConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageConverter.swift; sourceTree = "<group>"; };
-		11EEDEDF23FD872B0006C851 /* BlackFadeDirection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackFadeDirection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,9 +142,8 @@
 		11EEDED823F988FF0006C851 /* Data Stores */ = {
 			isa = PBXGroup;
 			children = (
-				11EEDEDF23FD872B0006C851 /* BlackFadeDirection.swift */,
-				11EEDED223F8A7DE0006C851 /* FiltersDataStore.swift */,
-				11EEDED423F8A9CC0006C851 /* ModesDataStore.swift */,
+				11EEDED223F8A7DE0006C851 /* FilterMenuButtonData.swift */,
+				11EEDED423F8A9CC0006C851 /* ModeMenuButtonData.swift */,
 			);
 			path = "Data Stores";
 			sourceTree = "<group>";
@@ -285,9 +282,8 @@
 				1176793723E1B8550037E6F5 /* AppDelegate.swift in Sources */,
 				11EEDED723F985020006C851 /* ImageConverter.swift in Sources */,
 				110275D723E9B9C00036F580 /* EditScreenViewController.swift in Sources */,
-				11EEDEE023FD872C0006C851 /* BlackFadeDirection.swift in Sources */,
-				11EEDED523F8A9CC0006C851 /* ModesDataStore.swift in Sources */,
-				11EEDED323F8A7DE0006C851 /* FiltersDataStore.swift in Sources */,
+				11EEDED523F8A9CC0006C851 /* ModeMenuButtonData.swift in Sources */,
+				11EEDED323F8A7DE0006C851 /* FilterMenuButtonData.swift in Sources */,
 				1176793923E1B8550037E6F5 /* SceneDelegate.swift in Sources */,
 				1191A3DD23E3164E00605699 /* NetworkProcessor.swift in Sources */,
 			);

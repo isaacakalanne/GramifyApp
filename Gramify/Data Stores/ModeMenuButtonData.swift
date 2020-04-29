@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ModesDataStore {
+class ModeMenuButtonData {
     
     let filterMode = ["modeName" : "Filter",
                       "defaultImageName" : "flowerW",

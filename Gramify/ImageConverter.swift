@@ -60,7 +60,6 @@ class ImageConverter {
     //        CISourceOverCompositing
     //        CISubtractBlendMode <------
             
-//            let filter = CIFilter(name: "CILinearDodgeBlendMode")
             let filter = CIFilter(name: filterName)
             filter?.setValue(originalImage, forKey: "inputBackgroundImage")
             filter?.setValue(filterImage, forKey: "inputImage")
@@ -78,7 +77,14 @@ class ImageConverter {
         bitmap.scaleBy(x: xScale, y: yScale)
         bitmap.translateBy(x: -image.size.width / 2, y: -image.size.height / 2)
         
-        let cgImage = convertImageToCGImage(image)!
+        var cgImage : CGImage
+        
+        if image.ciImage == nil {
+            let ciImage = CIImage(image: image)!
+            cgImage = convertImageToCGImage(ciImage)
+        } else {
+            cgImage = convertImageToCGImage(image)!
+        }
         
         bitmap.draw(cgImage, in: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
 
@@ -91,6 +97,12 @@ class ImageConverter {
     func convertImageToCGImage(_ image : UIImage) -> CGImage! {
         let context = CIContext()
         let filteredCGImage = context.createCGImage(image.ciImage!, from: image.ciImage!.extent)
+        return filteredCGImage
+    }
+    
+    func convertImageToCGImage(_ image : CIImage) -> CGImage! {
+        let context = CIContext()
+        let filteredCGImage = context.createCGImage(image, from: image.extent)
         return filteredCGImage
     }
     

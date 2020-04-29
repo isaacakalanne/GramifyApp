@@ -24,15 +24,12 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     var filteredImage = UIImage()
     
     let imageConverter = ImageConverter()
-    let modesDataStore = ModesDataStore()
+    let modeMenuButtonData = ModeMenuButtonData()
     var listOfModes : Array<[String : Any]> = []
     
-    let filtersDataStore = FiltersDataStore()
+    let filterMenuButtonData = FilterMenuButtonData()
     var listOfFilters : Array<[String : Any]> = []
     var originalFilterImage = UIImage()
-    
-    let fadesDataStore = FadesDataStore()
-    var listOfFades : Array<UIImage> = []
     
     var currentModeIndex = 0
     var currentFilterIndex = 0
@@ -85,9 +82,8 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     func initialiseListsOfItems() {
-        listOfModes = modesDataStore.getListOfModes()
-        listOfFilters = filtersDataStore.getListOfFilters()
-        listOfFades = fadesDataStore.getListOfBlackFadeDictionaries()
+        listOfModes = modeMenuButtonData.getListOfModes()
+        listOfFilters = filterMenuButtonData.getListOfFilters()
     }
     
     func getListOfItems(forCollectionView collectionView : UICollectionView) -> Array<Any> {
@@ -96,7 +92,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         } else if collectionView === primaryEditCollectionView {
             return listOfFilters
         } else if collectionView === secondaryEditCollectionView {
-            return listOfFades
+            return ["bottomRight", "topRight", "topLeft", "bottomLeft"]
         } else {
             return []
         }
@@ -117,18 +113,18 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
             
             UIView.animate(withDuration: 0.4) {
                 self.imagePreview.image = filteredImage // This doesn't currently correctly animate the transition
-                self.filteredImage = filteredImage
             }
+            self.filteredImage = filteredImage
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == modeSelectCollectionView {
-            return modesDataStore.getListOfModes().count
+            return modeMenuButtonData.getListOfModes().count
         } else if collectionView == primaryEditCollectionView {
-            return filtersDataStore.getListOfFilters().count
+            return filterMenuButtonData.getListOfFilters().count
         } else if collectionView == secondaryEditCollectionView {
-            return fadesDataStore.getListOfBlackFadeDictionaries().count
+            return 4
        } else {
             return 0
         }
@@ -160,31 +156,15 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         
         if cv === secondaryEditCollectionView {
 //            let listOfImages = getListOfItems(forCollectionView: cv)
-            image = getBlackFadeImageForCollectionView(atIndex: index)!
+            let scale = getScaleForFilterImageFlipping(forIndex: index)
+            image = UIImage(named: "blackFade")!
+            image = imageConverter.flipImageWithScale(xScale: scale.x, yScale: scale.y, image: image)!
         } else {
             let imageName = getCellImageName(atIndex: index, inCollectionView: cv)
             image = UIImage(named: imageName)!
         }
         
         return image
-    }
-    
-    func getBlackFadeImageForCollectionView(atIndex index : Int) -> UIImage? {
-        let blackFadeImage = UIImage(named: "blackFade")!
-        var rotatedImage : UIImage
-        switch index {
-        case 0:
-            rotatedImage = UIImage(cgImage: (blackFadeImage.cgImage)!, scale: 1.0, orientation: .up)
-        case 1:
-            rotatedImage = UIImage(cgImage: (blackFadeImage.cgImage)!, scale: 1.0, orientation: .left)
-        case 2:
-            rotatedImage = UIImage(cgImage: (blackFadeImage.cgImage)!, scale: 1.0, orientation: .down)
-        case 3:
-            rotatedImage = UIImage(cgImage: (blackFadeImage.cgImage)!, scale: 1.0, orientation: .right)
-        default:
-            rotatedImage = UIImage(cgImage: (blackFadeImage.cgImage)!, scale: 1.0, orientation: .up)
-        }
-        return rotatedImage
     }
     
     func getCellImageName(atIndex index : Int, inCollectionView cv : UICollectionView) -> String {
@@ -238,7 +218,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         if collectionView === secondaryEditCollectionView {
             
             fadeDirectionIndex = indexPath.item
-            applyFilter(withFilterImageIndex: currentFilterIndex, andFadeDirectionIndex: fadeDirectionIndex)
+            applyFilter()
             
         } else if collectionView === primaryEditCollectionView {
             
@@ -252,12 +232,12 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         
     }
     
-    func applyFilter(withFilterImageIndex filterIndex : Int, andFadeDirectionIndex fadeIndex : Int) {
+    func applyFilter() {
         
-        let filterImage = getFilterImage(atIndex: filterIndex)!
+        let filterImage = getFilterImage(atIndex: currentFilterIndex)!
         let blackFadeImage = UIImage(named: "blackFade")!
         
-        overlayImage(filterImage, withImage: blackFadeImage, andFadeDirectionIndex: fadeIndex)
+        overlayImage(filterImage, withImage: blackFadeImage, andFadeDirectionIndex: fadeDirectionIndex)
         
     }
     
@@ -278,7 +258,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     
     func filterUserImage(_ image : UIImage, withFilterType filterName : String, andFilterImage filterImage : UIImage) {
         
-        let scale = getScaleForFilterImageFlipping()
+        let scale = getScaleForFilterImageFlipping(forIndex: fadeDirectionIndex)
         
         let flippedFilterImage = imageConverter.flipImageWithScale(xScale: scale.x, yScale: scale.y, image: filterImage)!
         
@@ -294,8 +274,8 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         })
     }
     
-    func getScaleForFilterImageFlipping() -> (x: CGFloat, y: CGFloat) {
-        switch fadeDirectionIndex {
+    func getScaleForFilterImageFlipping(forIndex index : Int) -> (x: CGFloat, y: CGFloat) {
+        switch index {
         case 0:
             return (x: -1, y: 1)
         case 1:
