@@ -216,40 +216,34 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if collectionView === secondaryEditCollectionView {
-            
             fadeDirectionIndex = indexPath.item
             applyFilter()
-            
         } else if collectionView === primaryEditCollectionView {
-            
             currentFilterIndex = indexPath.item
-            
+            applyFilter()
         } else if collectionView === modeSelectCollectionView {
-            
             currentModeIndex = indexPath.item
-            
         }
         
     }
     
     func applyFilter() {
         
-        let filterImage = getFilterImage(atIndex: currentFilterIndex)!
+        let filterImage = getFilterImage()!
         let blackFadeImage = UIImage(named: "blackFade")!
-        
-        overlayImage(filterImage, withImage: blackFadeImage, andFadeDirectionIndex: fadeDirectionIndex)
+        overlayImage(filterImage, withImage: blackFadeImage)
         
     }
     
-    func getFilterImage(atIndex index : Int) -> UIImage? {
-        let filterImageData = listOfFilters[index]
+    func getFilterImage() -> UIImage? {
+        let filterImageData = listOfFilters[currentFilterIndex]
         let filterImageName = filterImageData["defaultImageName"] as! String
         let filterImage = UIImage(named: filterImageName)!
         
         return filterImage
     }
     
-    func overlayImage(_ image : UIImage, withImage overlayImage : UIImage, andFadeDirectionIndex fadeIndex : Int) {
+    func overlayImage(_ image : UIImage, withImage overlayImage : UIImage) {
         imageConverter.applyFilter("CISourceOverCompositing", toImage: image, withFilterImage: overlayImage) { filterImage in
             
             self.filterUserImage(self.originalImage, withFilterType: "CILinearDodgeBlendMode", andFilterImage: filterImage)
