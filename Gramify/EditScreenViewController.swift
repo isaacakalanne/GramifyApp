@@ -159,14 +159,32 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         var image : UIImage
         
         if cv === secondaryEditCollectionView {
-            let listOfImages = getListOfItems(forCollectionView: cv)
-            image = listOfImages[index] as! UIImage
+//            let listOfImages = getListOfItems(forCollectionView: cv)
+            image = getBlackFadeImageForCollectionView(atIndex: index)!
         } else {
             let imageName = getCellImageName(atIndex: index, inCollectionView: cv)
             image = UIImage(named: imageName)!
         }
         
         return image
+    }
+    
+    func getBlackFadeImageForCollectionView(atIndex index : Int) -> UIImage? {
+        let blackFadeImage = UIImage(named: "blackFade")!
+        var rotatedImage : UIImage
+        switch index {
+        case 0:
+            rotatedImage = UIImage(cgImage: (blackFadeImage.cgImage)!, scale: 1.0, orientation: .up)
+        case 1:
+            rotatedImage = UIImage(cgImage: (blackFadeImage.cgImage)!, scale: 1.0, orientation: .left)
+        case 2:
+            rotatedImage = UIImage(cgImage: (blackFadeImage.cgImage)!, scale: 1.0, orientation: .down)
+        case 3:
+            rotatedImage = UIImage(cgImage: (blackFadeImage.cgImage)!, scale: 1.0, orientation: .right)
+        default:
+            rotatedImage = UIImage(cgImage: (blackFadeImage.cgImage)!, scale: 1.0, orientation: .up)
+        }
+        return rotatedImage
     }
     
     func getCellImageName(atIndex index : Int, inCollectionView cv : UICollectionView) -> String {
