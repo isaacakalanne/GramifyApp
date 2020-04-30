@@ -105,21 +105,6 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         return count
     }
     
-    @objc func fadeButtonPressed(sender : UIButton) {
-        let fadeDirection = sender.accessibilityIdentifier!
-        let filterName = "\(selectedFilter + fadeDirection)"
-        var filterImage = UIImage(named: filterName)
-        
-        filterImage = imageConverter.resizeImage(filterImage!, toSizeOfImage: originalImage)
-        imageConverter.applyFilter("CILinearDodgeBlendMode", toImage: self.originalImage, withFilterImage: filterImage!) { filteredImage in
-            
-            UIView.animate(withDuration: 0.4) {
-                self.imagePreview.image = filteredImage // This doesn't currently correctly animate the transition
-            }
-            self.filteredImage = filteredImage
-        }
-    }
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == modeSelectCollectionView {
             return modeMenuButtonData.getListOfModes().count
@@ -189,8 +174,8 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     
     func getFrameForImageView(inCell cell : UICollectionViewCell) -> CGRect {
         let cellWidth = cell.bounds.size.width
-        let cellHeight = cell.bounds.size.height
-        let frame = CGRect(x: cellWidth / 2 - cellHeight / 2, y: 0, width: cellHeight, height: cellHeight)
+        let imageSize = cell.bounds.size.height
+        let frame = CGRect(x: cellWidth/2 - imageSize/2, y: 0, width: imageSize, height: imageSize)
         return frame
     }
     
@@ -207,12 +192,18 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let itemCount = getListSize(forCollectionView: collectionView)
+        let itemSize = getCollectionViewItemSize(itemCount: itemCount)
+        let itemHeight = collectionView.bounds.size.height
+        
+        return CGSize(width: itemSize, height: itemHeight)
+        
+    }
+    
+    func getCollectionViewItemSize(itemCount : Int) -> CGFloat {
         let screenWidth = UIScreen.main.bounds.size.width
-        let listOfItemsCount = getListSize(forCollectionView: collectionView)
-        let itemCountAsFloat = CGFloat(listOfItemsCount)
-        
-        return CGSize(width: screenWidth/itemCountAsFloat, height: collectionView.bounds.size.height)
-        
+        return screenWidth/CGFloat(itemCount)
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -259,7 +250,9 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         imageConverter.applyFilter(filterStyle, toImage: self.originalImage, withFilterImage: resizedImage, completion: { filteredImage in
             
             self.filteredImage = filteredImage
-            self.imagePreview.image = self.filteredImage
+            UIView.animate(withDuration: 0.4) {
+                self.imagePreview.image = self.filteredImage
+            }
             
             print("Done!")
             
