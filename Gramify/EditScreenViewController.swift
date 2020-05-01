@@ -39,7 +39,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        createImages()
+        initialiseImages()
         initialiseImagePreview()
         
         initialiseListsOfItems()
@@ -48,7 +48,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         initialiseCollectionView(secondaryEditCollectionView)
     }
     
-    func createImages() {
+    func initialiseImages() {
         originalImage = UIImage(named: "testPortrait2")!
         filteredImage = originalImage
     }
@@ -60,6 +60,11 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         UIView.animate(withDuration: 0.4) {
             self.imagePreview.alpha = 1
         }
+    }
+    
+    func initialiseListsOfItems() {
+        listOfModes = modeMenuButtonData.getListOfModes()
+        listOfFilters = filterMenuButtonData.getListOfFilters()
     }
     
     func initialiseCollectionView(_ collectionView : UICollectionView) {
@@ -80,11 +85,6 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         layout.minimumLineSpacing = 0
         
         return layout
-    }
-    
-    func initialiseListsOfItems() {
-        listOfModes = modeMenuButtonData.getListOfModes()
-        listOfFilters = filterMenuButtonData.getListOfFilters()
     }
     
     func getListOfItems(forCollectionView collectionView : UICollectionView) -> Array<Any> {
@@ -142,10 +142,9 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         var image : UIImage
         
         if cv === secondaryEditCollectionView {
-//            let listOfImages = getListOfItems(forCollectionView: cv)
-            let scale = getScaleForFilterImageFlipping(forIndex: index)
+            let scale = getImageFlippingScale(forIndex: index)
             image = UIImage(named: "blackFade")!
-            image = imageConverter.flipImageWithScale(xScale: scale.x, yScale: scale.y, image: image)!
+            image = imageConverter.flipImageWithScale(image, scale)!
         } else {
             let imageName = getCellImageName(atIndex: index, inCollectionView: cv)
             image = UIImage(named: imageName)!
@@ -241,9 +240,9 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     
     func filterUserImage(_ image : UIImage, andFilterImage filterImage : UIImage) {
         
-        let scale = getScaleForFilterImageFlipping(forIndex: fadeDirectionIndex)
+        let scale = getImageFlippingScale(forIndex: fadeDirectionIndex)
         
-        let flippedFilterImage = imageConverter.flipImageWithScale(xScale: scale.x, yScale: scale.y, image: filterImage)!
+        let flippedFilterImage = imageConverter.flipImageWithScale(filterImage, scale)!
         
         let resizedImage = imageConverter.resizeImage(flippedFilterImage, toSizeOfImage: image)
         
@@ -259,7 +258,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         })
     }
     
-    func getScaleForFilterImageFlipping(forIndex index : Int) -> (x: CGFloat, y: CGFloat) {
+    func getImageFlippingScale(forIndex index : Int) -> (x: CGFloat, y: CGFloat) {
         switch index {
         case 0:
             return (x: -1, y: 1)
@@ -270,7 +269,8 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         case 3:
             return (x: 1, y: 1)
         default:
-            return (x: 1, y: 1)
+            NSLog("Default image flipping scale")
+            return (x: 0, y: 0)
         }
     }
 

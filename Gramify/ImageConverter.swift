@@ -69,12 +69,12 @@ class ImageConverter {
             completion(imageWithFilter)
     }
     
-    func flipImageWithScale(xScale : CGFloat, yScale : CGFloat, image : UIImage) -> UIImage? {
+    func flipImageWithScale(_ image : UIImage, _ scale : (x: CGFloat, y: CGFloat)) -> UIImage? {
         UIGraphicsBeginImageContextWithOptions(image.size, false, image.scale)
         let bitmap = UIGraphicsGetCurrentContext()!
         
         bitmap.translateBy(x: image.size.width / 2, y: image.size.height / 2)
-        bitmap.scaleBy(x: xScale, y: yScale)
+        bitmap.scaleBy(x: scale.x, y: scale.y)
         bitmap.translateBy(x: -image.size.width / 2, y: -image.size.height / 2)
         
         var cgImage : CGImage
