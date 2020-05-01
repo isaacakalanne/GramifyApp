@@ -75,12 +75,14 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     
     func createLayout(forCollectionView collectionView : UICollectionView) -> UICollectionViewFlowLayout {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        let screenWidth = UIScreen.main.bounds.size.width
         
         let itemCount = getListSize(forCollectionView: collectionView)
-        let itemCountAsFloat = CGFloat(itemCount)
+        let itemWidth = getCollectionViewItemWidth(forItemCount: itemCount)
+        let itemHeight = collectionView.bounds.size.height
         
-        layout.itemSize = CGSize(width: screenWidth/itemCountAsFloat, height: collectionView.bounds.size.height)
+        let itemSize = CGSize(width: itemWidth, height: itemHeight)
+        
+        layout.itemSize = itemSize
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         
@@ -193,16 +195,16 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let itemCount = getListSize(forCollectionView: collectionView)
-        let itemSize = getCollectionViewItemSize(itemCount: itemCount)
+        let itemWidth = getCollectionViewItemWidth(forItemCount: itemCount)
         let itemHeight = collectionView.bounds.size.height
         
-        return CGSize(width: itemSize, height: itemHeight)
+        return CGSize(width: itemWidth, height: itemHeight)
         
     }
     
-    func getCollectionViewItemSize(itemCount : Int) -> CGFloat {
+    func getCollectionViewItemWidth(forItemCount : Int) -> CGFloat {
         let screenWidth = UIScreen.main.bounds.size.width
-        return screenWidth/CGFloat(itemCount)
+        return screenWidth/CGFloat(forItemCount)
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -215,6 +217,13 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
             applyFilter()
         } else if collectionView === modeSelectCollectionView {
             currentModeIndex = indexPath.item
+            if currentModeIndex != 0 {
+                primaryEditCollectionView.alpha = 0
+                secondaryEditCollectionView.alpha = 0
+            } else {
+                primaryEditCollectionView.alpha = 1
+                secondaryEditCollectionView.alpha = 1
+            }
         }
         
     }
