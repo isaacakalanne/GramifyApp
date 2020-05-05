@@ -13,15 +13,15 @@ class ImageConverter {
     
     func resizeImage(_ originalImage : UIImage , toSizeOfImage targetImage : UIImage) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(targetImage.size, false, 0.0);
-        originalImage.draw(in: CGRect(origin: CGPoint.zero, size: CGSize(width: targetImage.size.width, height: targetImage.size.height)))
+        let widthRatio = targetImage.size.width / originalImage.size.width
+        let heightRatio = targetImage.size.height / originalImage.size.height
+        originalImage.draw(in: CGRect(x: 0, y: 0, width: targetImage.size.width / widthRatio, height: targetImage.size.height / heightRatio))
         let resizedFilterImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         return resizedFilterImage
     }
     
     // TO DO :
-    // - Use CISourceAtopCompositing (or similar CIFilter) to combine user-uploaded filter image and image of black-to-transparent fade. This combined image can then be used as a faded filter image, rather than having to individually create each one. These images can then be flipped horizontally and vertically to fade from all 4 corners
-    // - Change'Download' button to 'Upload' button, to allow user to upload their image to Instagram (or other online platform) with one click
     // - Add feature to have filters 'behind' a person as well - Either app detects the person's outline and can place images 'behind' them, or the user has a feature to easily manually cutout their outline
     //   - Can also put animated filters behind person (falling leaves, floating lights, etc)
     //   - Can animate background itself (make the clouds move, make the waves roll, etc)

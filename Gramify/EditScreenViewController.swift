@@ -19,21 +19,20 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     let primaryEditCellIdentifier = "primaryEditCell"
     let secondaryEditCellIdentifier = "secondaryEditCell"
     
-    var selectedFilter = "pinkRoses"
-    var originalImage = UIImage()
+    var unfilteredImage = UIImage()
     var filteredImage = UIImage()
     
+    let filterImages = FilterImages()
     let imageConverter = ImageConverter()
-    let modeMenuButtonData = ModeMenuButtonData()
-    var listOfModes : Array<[String : Any]> = []
+    let modeButtons = ModeButtons()
+    var listOfModes : Array<ModeButtons.Mode> = []
     
-    let filterMenuButtonData = FilterMenuButtonData()
-    var listOfFilters : Array<[String : Any]> = []
+    var listOfFilters : Array<FilterImages.Filter> = []
     var originalFilterImage = UIImage()
     var filterStyle = "CILinearDodgeBlendMode"
     
     var currentModeIndex = 0
-    var currentFilterIndex = 0
+    var filterIndex = 0
     var fadeDirectionIndex = 0
 
     override func viewDidLoad() {
@@ -49,13 +48,13 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     func initialiseImages() {
-        originalImage = UIImage(named: "testPortrait2")!
-        filteredImage = originalImage
+        unfilteredImage = UIImage(named: "testPortrait2")!
+        filteredImage = unfilteredImage
     }
     
     func initialiseImagePreview() {
         imagePreview.alpha = 0
-        imagePreview.image = originalImage
+        imagePreview.image = unfilteredImage
         
         UIView.animate(withDuration: 0.4) {
             self.imagePreview.alpha = 1
@@ -63,8 +62,8 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     func initialiseListsOfItems() {
-        listOfModes = modeMenuButtonData.getListOfModes()
-        listOfFilters = filterMenuButtonData.getListOfFilters()
+        listOfModes = modeButtons.getListOfModes()
+        listOfFilters = filterImages.getListOfFilters()
     }
     
     func initialiseCollectionView(_ collectionView : UICollectionView) {
@@ -109,9 +108,9 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == modeSelectCollectionView {
-            return modeMenuButtonData.getListOfModes().count
+            return modeButtons.getListOfModes().count
         } else if collectionView == primaryEditCollectionView {
-            return filterMenuButtonData.getListOfFilters().count
+            return filterImages.getListOfFilters().count
         } else if collectionView == secondaryEditCollectionView {
             return 4
        } else {
@@ -141,31 +140,54 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     
     func getCellImage(atIndex index : Int, inCollectionView cv : UICollectionView) -> UIImage {
         
-        var image : UIImage
+        var cellImage : UIImage
         
         if cv === secondaryEditCollectionView {
             let scale = getImageFlippingScale(forIndex: index)
-            image = UIImage(named: "blackFade")!
-            image = imageConverter.flipImageWithScale(image, scale)!
+            cellImage = UIImage(named: "blackFade")!
+            guard let flippedImage = imageConverter.flipImageWithScale(cellImage, scale) else {
+                print("Flip black fade image failed.")
+                return UIImage()
+            }
+            cellImage = flippedImage
+        } else if cv === primaryEditCollectionView {
+            let fileName = getFilterImageFileName(atIndex: index)
+            cellImage = safeCreateUIImage(named: fileName)
+        } else if cv === modeSelectCollectionView {
+            let fileName = getModeImageFileName(atIndex: index)
+            cellImage = safeCreateUIImage(named: fileName)
         } else {
-            let imageName = getCellImageName(atIndex: index, inCollectionView: cv)
-            image = UIImage(named: imageName)!
+            print("cellImage fell through to here.")
+            cellImage = UIImage()
         }
         
+        return cellImage
+    }
+    
+    func safeCreateUIImage(named name : String) -> UIImage {
+        guard let image = UIImage(named: name) else {
+            print("Could not create cellImage from name \(name).")
+            return UIImage()
+        }
         return image
     }
     
-    func getCellImageName(atIndex index : Int, inCollectionView cv : UICollectionView) -> String {
-        var imageName : String
-        let listOfItems = getListOfItems(forCollectionView: cv)
+    func getFilterImageFileName(atIndex index : Int) -> String {
         
-        if cv === secondaryEditCollectionView {
-            imageName = ""
-        } else {
-            let currentItem = listOfItems[index] as! Dictionary<String, Any>
-            imageName = currentItem["defaultImageName"] as! String
-        }
-        return imageName
+        let listOfItems = filterImages.getListOfFilters()
+        let filter = listOfItems[index]
+        let fileName = filter.imageFileName
+        
+        return fileName
+    }
+    
+    func getModeImageFileName(atIndex index : Int) -> String {
+        
+        let listOfItems = modeButtons.getListOfModes()
+        let modeButton = listOfItems[index]
+        let fileName = modeButton.unselectedImageFileName
+        
+        return fileName
     }
     
     func roundCornersOfView(_ view : UIView) {
@@ -213,7 +235,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
             fadeDirectionIndex = indexPath.item
             applyFilter()
         } else if collectionView === primaryEditCollectionView {
-            currentFilterIndex = indexPath.item
+            filterIndex = indexPath.item
             applyFilter()
         } else if collectionView === modeSelectCollectionView {
             currentModeIndex = indexPath.item
@@ -229,25 +251,29 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     func applyFilter() {
-        let filterImage = getFilterImage()!
-        let blackFadeImage = UIImage(named: "blackFade")!
+        let filterImage = getFilterImage()
+        let blackFadeImage = UIImage(named: "blackFade") ?? UIImage()
         
         imageConverter.applyFilter("CISourceOverCompositing", toImage: filterImage, withFilterImage: blackFadeImage) { filterImage in
             
-            self.filterUserImage(self.originalImage, andFilterImage: filterImage)
+            self.filterImage(self.unfilteredImage, withFilterImage: filterImage)
+            
         }
         
     }
     
-    func getFilterImage() -> UIImage? {
-        let filterImageData = listOfFilters[currentFilterIndex]
-        let filterImageName = filterImageData["defaultImageName"] as! String
-        let filterImage = UIImage(named: filterImageName)!
+    func getFilterImage() -> UIImage {
+        let filter = listOfFilters[filterIndex] as FilterImages.Filter
+        let fileName = filter.imageFileName
+        guard let filterImage = UIImage(named: fileName) else {
+            print("Could not get UIImage from file name \(fileName)")
+            return UIImage()
+        }
         
         return filterImage
     }
     
-    func filterUserImage(_ image : UIImage, andFilterImage filterImage : UIImage) {
+    func filterImage(_ image : UIImage, withFilterImage filterImage : UIImage) {
         
         let scale = getImageFlippingScale(forIndex: fadeDirectionIndex)
         
@@ -255,7 +281,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         
         let resizedImage = imageConverter.resizeImage(flippedFilterImage, toSizeOfImage: image)
         
-        imageConverter.applyFilter(filterStyle, toImage: self.originalImage, withFilterImage: resizedImage, completion: { filteredImage in
+        imageConverter.applyFilter(filterStyle, toImage: self.unfilteredImage, withFilterImage: resizedImage, completion: { filteredImage in
             
             self.filteredImage = filteredImage
             UIView.animate(withDuration: 0.4) {
