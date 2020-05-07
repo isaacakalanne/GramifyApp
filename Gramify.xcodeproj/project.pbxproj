@@ -113,7 +113,6 @@
 				11EEDED623F985020006C851 /* ImageConverter.swift */,
 				11EEDED223F8A7DE0006C851 /* FilterImages.swift */,
 				11EEDED423F8A9CC0006C851 /* ModeButtons.swift */,
-				11EEDED823F988FF0006C851 /* Data Stores */,
 				1176796A23E3135F0037E6F5 /* NetworkProcessor.swift */,
 				1176793C23E1B8550037E6F5 /* Main.storyboard */,
 				1176793F23E1B85B0037E6F5 /* Assets.xcassets */,
@@ -139,13 +138,6 @@
 				1176795A23E1B85C0037E6F5 /* Info.plist */,
 			);
 			path = GramifyUITests;
-			sourceTree = "<group>";
-		};
-		11EEDED823F988FF0006C851 /* Data Stores */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Data Stores";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
