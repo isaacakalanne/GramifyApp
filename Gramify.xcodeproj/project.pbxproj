@@ -16,6 +16,8 @@
 		1176794E23E1B85C0037E6F5 /* GramifyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1176794D23E1B85C0037E6F5 /* GramifyTests.swift */; };
 		1176795923E1B85C0037E6F5 /* GramifyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1176795823E1B85C0037E6F5 /* GramifyUITests.swift */; };
 		1191A3DD23E3164E00605699 /* NetworkProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1176796A23E3135F0037E6F5 /* NetworkProcessor.swift */; };
+		11DC7D43246B3CC900D782C9 /* TouchModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DC7D42246B3CC900D782C9 /* TouchModifiers.swift */; };
+		11DC7D45246B41E300D782C9 /* SizeModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11DC7D44246B41E200D782C9 /* SizeModifiers.swift */; };
 		11EEDED323F8A7DE0006C851 /* FilterImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EEDED223F8A7DE0006C851 /* FilterImages.swift */; };
 		11EEDED523F8A9CC0006C851 /* ModeButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EEDED423F8A9CC0006C851 /* ModeButtons.swift */; };
 		11EEDED723F985020006C851 /* ImageConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EEDED623F985020006C851 /* ImageConverter.swift */; };
@@ -54,6 +56,8 @@
 		1176795823E1B85C0037E6F5 /* GramifyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GramifyUITests.swift; sourceTree = "<group>"; };
 		1176795A23E1B85C0037E6F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1176796A23E3135F0037E6F5 /* NetworkProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProcessor.swift; sourceTree = "<group>"; };
+		11DC7D42246B3CC900D782C9 /* TouchModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchModifiers.swift; sourceTree = "<group>"; };
+		11DC7D44246B41E200D782C9 /* SizeModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeModifiers.swift; sourceTree = "<group>"; };
 		11EEDED223F8A7DE0006C851 /* FilterImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterImages.swift; sourceTree = "<group>"; };
 		11EEDED423F8A9CC0006C851 /* ModeButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeButtons.swift; sourceTree = "<group>"; };
 		11EEDED623F985020006C851 /* ImageConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageConverter.swift; sourceTree = "<group>"; };
@@ -112,6 +116,8 @@
 				110275D623E9B9C00036F580 /* EditScreenViewController.swift */,
 				11EEDED623F985020006C851 /* ImageConverter.swift */,
 				11EEDED223F8A7DE0006C851 /* FilterImages.swift */,
+				11DC7D44246B41E200D782C9 /* SizeModifiers.swift */,
+				11DC7D42246B3CC900D782C9 /* TouchModifiers.swift */,
 				11EEDED423F8A9CC0006C851 /* ModeButtons.swift */,
 				1176796A23E3135F0037E6F5 /* NetworkProcessor.swift */,
 				1176793C23E1B8550037E6F5 /* Main.storyboard */,
@@ -275,9 +281,11 @@
 				11EEDED723F985020006C851 /* ImageConverter.swift in Sources */,
 				110275D723E9B9C00036F580 /* EditScreenViewController.swift in Sources */,
 				11EEDED523F8A9CC0006C851 /* ModeButtons.swift in Sources */,
+				11DC7D43246B3CC900D782C9 /* TouchModifiers.swift in Sources */,
 				11EEDED323F8A7DE0006C851 /* FilterImages.swift in Sources */,
 				1176793923E1B8550037E6F5 /* SceneDelegate.swift in Sources */,
 				1191A3DD23E3164E00605699 /* NetworkProcessor.swift in Sources */,
+				11DC7D45246B41E300D782C9 /* SizeModifiers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

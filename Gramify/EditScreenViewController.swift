@@ -31,9 +31,12 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     var originalFilterImage = UIImage()
     var filterStyle = "CILinearDodgeBlendMode"
     
-    var currentModeIndex = 0
-    var filterIndex = 0
-    var fadeDirectionIndex = 0
+    var modeTypeIndex = 0
+    var filterTypeIndex = 0
+    var fadeTypeIndex = 0
+    
+    var startPoint = CGPoint()
+    var endPoint = CGPoint()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,10 +58,8 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     func initialiseImagePreview() {
         imagePreview.alpha = 0
         imagePreview.image = unfilteredImage
-        
-        UIView.animate(withDuration: 0.4) {
-            self.imagePreview.alpha = 1
-        }
+        imagePreview.contentMode = .scaleAspectFit
+        self.imagePreview.alpha = 1
     }
     
     func initialiseListsOfItems() {
@@ -96,6 +97,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         } else if collectionView === secondaryEditCollectionView {
             return ["bottomRight", "topRight", "topLeft", "bottomLeft"]
         } else {
+            print("Could not return a list of items.")
             return []
         }
     }
@@ -203,6 +205,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     func getCellReuseIdentifier(forCollectionView collectionView : UICollectionView) -> String {
+        
         if collectionView === modeSelectCollectionView {
             return modeSelectCellIdentifier
         } else if collectionView === primaryEditCollectionView {
@@ -212,6 +215,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
        } else {
             return ""
         }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -232,14 +236,14 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if collectionView === secondaryEditCollectionView {
-            fadeDirectionIndex = indexPath.item
+            fadeTypeIndex = indexPath.item
             applyFilter()
         } else if collectionView === primaryEditCollectionView {
-            filterIndex = indexPath.item
+            filterTypeIndex = indexPath.item
             applyFilter()
         } else if collectionView === modeSelectCollectionView {
-            currentModeIndex = indexPath.item
-            if currentModeIndex != 0 {
+            modeTypeIndex = indexPath.item
+            if modeTypeIndex != 0 {
                 primaryEditCollectionView.alpha = 0
                 secondaryEditCollectionView.alpha = 0
             } else {
@@ -251,20 +255,23 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     func applyFilter() {
-        let filterImage = getFilterImage()
+        
+        let image = getFilterImage()
         let blackFadeImage = UIImage(named: "blackFade") ?? UIImage()
         
-        imageConverter.applyFilter("CISourceOverCompositing", toImage: filterImage, withFilterImage: blackFadeImage) { filterImage in
+        imageConverter.applyFilter("CISourceOverCompositing", toImage: image, withFilterImage: blackFadeImage) { overlayImage in
             
-            self.filterImage(self.unfilteredImage, withFilterImage: filterImage)
+            self.filterImage(self.unfilteredImage, withOverlayImage: overlayImage)
             
         }
         
     }
     
     func getFilterImage() -> UIImage {
-        let filter = listOfFilters[filterIndex] as FilterImages.Filter
+        
+        let filter = listOfFilters[filterTypeIndex] as FilterImages.Filter
         let fileName = filter.imageFileName
+        
         guard let filterImage = UIImage(named: fileName) else {
             print("Could not get UIImage from file name \(fileName)")
             return UIImage()
@@ -273,27 +280,23 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         return filterImage
     }
     
-    func filterImage(_ image : UIImage, withFilterImage filterImage : UIImage) {
+    func filterImage(_ image : UIImage, withOverlayImage overlayImage : UIImage) {
         
-        let scale = getImageFlippingScale(forIndex: fadeDirectionIndex)
+        let scale = getImageFlippingScale(forIndex: fadeTypeIndex)
+        var overlayImage = imageConverter.flipImageWithScale(overlayImage, scale)!
+        overlayImage = imageConverter.resizeImage(overlayImage, toSizeOfImage: image)
         
-        let flippedFilterImage = imageConverter.flipImageWithScale(filterImage, scale)!
-        
-        let resizedImage = imageConverter.resizeImage(flippedFilterImage, toSizeOfImage: image)
-        
-        imageConverter.applyFilter(filterStyle, toImage: self.unfilteredImage, withFilterImage: resizedImage, completion: { filteredImage in
+        imageConverter.applyFilter(filterStyle, toImage: self.unfilteredImage, withFilterImage: overlayImage, completion: { filteredImage in
             
             self.filteredImage = filteredImage
-            UIView.animate(withDuration: 0.4) {
-                self.imagePreview.image = self.filteredImage
-            }
-            
-            print("Done!")
+            self.imagePreview.image = self.filteredImage
             
         })
+        
     }
     
     func getImageFlippingScale(forIndex index : Int) -> (x: CGFloat, y: CGFloat) {
+        
         switch index {
         case 0:
             return (x: -1, y: 1)
@@ -307,6 +310,126 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
             NSLog("Default image flipping scale")
             return (x: 0, y: 0)
         }
+        
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        if let touch = touches.first {
+            startPoint.set(withTouch: touch, inView: imagePreview)
+            endPoint = startPoint
+            drawLine(fromPoint: startPoint, toPoint: endPoint, color: .clear, width: 50)
+        }
+        
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        if let touch = touches.first {
+            endPoint.set(withTouch: touch, inView: imagePreview)
+            drawLine(fromPoint: startPoint, toPoint: endPoint, color: .clear, width: 50)
+            startPoint.set(withTouch: touch, inView: imagePreview)
+        }
+        
+    }
+    
+    func drawLine(fromPoint start: CGPoint, toPoint end:CGPoint, color: UIColor, width: CGFloat) {
+        
+        let imageRect = getAspectFitCGRect(ofImage: imagePreview.image!, inView: imagePreview)
+        UIGraphicsBeginImageContextWithOptions(imagePreview.frame.size, false, 0.0)
+        
+        imagePreview.image?.draw(in: imageRect)
+        
+        if let context = UIGraphicsGetCurrentContext() {
+            
+            context.setLineWidth(width)
+            context.setStrokeColor(color.cgColor)
+            context.setLineCap(CGLineCap.round)
+            
+            context.move(to: start)
+            context.addLine(to: end)
+            
+            context.setBlendMode(CGBlendMode.clear)
+            
+            context.strokePath()
+            
+            imagePreview.image = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
+        }
+        
+    }
+    
+    func getAspectFitCGRect(ofImage image : UIImage, inView view : UIView) -> CGRect {
+        
+        let frameSize = view.frame.size
+        let imageSize = image.size
+        
+        let newRect = createNewRect(forImageSize: imageSize, inFrameSize: frameSize)
+        
+        return newRect
+    }
+    
+    func createNewRect(forImageSize imageSize : CGSize, inFrameSize frameSize : CGSize) -> CGRect {
+        
+        let scaleFactor = getScaleFactor(frameSize: frameSize, imageSize: imageSize)
+        
+        let newSize = getScaledSize(originalSize: imageSize, withScaleFactor: scaleFactor)
+        let newOrigin = getOrigin(forImageSize: newSize, inFrameSize: frameSize)
+        
+        let newRect = CGRect(origin: newOrigin, size: newSize)
+        
+        return newRect
+    }
+    
+    func isAspectFitVertical(frameSize : CGSize, imageSize : CGSize) -> Bool {
+        
+        let viewRatio = frameSize.sizeRatio()
+        let imageRatio = imageSize.sizeRatio()
+        
+        if viewRatio > imageRatio {
+            return true
+        } else {
+            return false
+        }
+        
+    }
+    
+    func getScaledSize(originalSize size : CGSize, withScaleFactor scaleFactor : CGFloat) -> CGSize {
+        var scaledSize = CGSize()
+        scaledSize.width = size.width / scaleFactor
+        scaledSize.height = size.height / scaleFactor
+        return scaledSize
+    }
+    
+    func getScaleFactor(frameSize : CGSize, imageSize : CGSize) -> CGFloat {
+        
+        var scaleFactor : CGFloat = 0
+        let isFitVertical = isAspectFitVertical(frameSize: frameSize, imageSize: imageSize)
+        
+        if isFitVertical {
+            scaleFactor = imageSize.height / frameSize.height
+        } else {
+            scaleFactor = imageSize.width / frameSize.width
+        }
+        
+        return scaleFactor
+    }
+    
+    func getOrigin(forImageSize imageSize : CGSize, inFrameSize frameSize : CGSize) -> CGPoint {
+        
+        var origin = CGPoint(x: 0, y: 0)
+        
+        let isFitVertical = isAspectFitVertical(frameSize: frameSize, imageSize: imageSize)
+        
+        if isFitVertical {
+            origin.x = (frameSize.width - imageSize.width) / 2
+        } else {
+            origin.y = (frameSize.height - imageSize.height) / 2
+        }
+        
+        return origin
+        
     }
 
 }
