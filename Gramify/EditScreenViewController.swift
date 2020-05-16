@@ -10,7 +10,8 @@ import UIKit
 
 class EditScreenViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
-    @IBOutlet weak var imagePreview: UIImageView!
+    @IBOutlet weak var originalImagePreview: UIImageView!
+    @IBOutlet weak var filteredImagePreview: UIImageView!
     @IBOutlet weak var modeSelectCollectionView: UICollectionView!
     @IBOutlet weak var primaryEditCollectionView: UICollectionView!
     @IBOutlet weak var secondaryEditCollectionView: UICollectionView!
@@ -56,10 +57,12 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     func initialiseImagePreview() {
-        imagePreview.alpha = 0
-        imagePreview.image = unfilteredImage
-        imagePreview.contentMode = .scaleAspectFit
-        self.imagePreview.alpha = 1
+        filteredImagePreview.alpha = 0
+        filteredImagePreview.image = unfilteredImage
+        filteredImagePreview.contentMode = .scaleAspectFit
+        filteredImagePreview.alpha = 1
+        
+        originalImagePreview.image = unfilteredImage
     }
     
     func initialiseListsOfItems() {
@@ -289,7 +292,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
         imageConverter.applyFilter(filterStyle, toImage: self.unfilteredImage, withFilterImage: overlayImage, completion: { filteredImage in
             
             self.filteredImage = filteredImage
-            self.imagePreview.image = self.filteredImage
+            self.filteredImagePreview.image = self.filteredImage
             
         })
         
@@ -316,7 +319,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         if let touch = touches.first {
-            startPoint.set(withTouch: touch, inView: imagePreview)
+            startPoint.set(withTouch: touch, inView: filteredImagePreview)
             endPoint = startPoint
             drawLine(fromPoint: startPoint, toPoint: endPoint, color: .clear, width: 50)
         }
@@ -326,19 +329,19 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         if let touch = touches.first {
-            endPoint.set(withTouch: touch, inView: imagePreview)
+            endPoint.set(withTouch: touch, inView: filteredImagePreview)
             drawLine(fromPoint: startPoint, toPoint: endPoint, color: .clear, width: 50)
-            startPoint.set(withTouch: touch, inView: imagePreview)
+            startPoint.set(withTouch: touch, inView: filteredImagePreview)
         }
         
     }
     
     func drawLine(fromPoint start: CGPoint, toPoint end:CGPoint, color: UIColor, width: CGFloat) {
         
-        let imageRect = getAspectFitCGRect(ofImage: imagePreview.image!, inView: imagePreview)
-        UIGraphicsBeginImageContextWithOptions(imagePreview.frame.size, false, 0.0)
+        let imageRect = getAspectFitCGRect(ofImage: filteredImagePreview.image!, inView: filteredImagePreview)
+        UIGraphicsBeginImageContextWithOptions(filteredImagePreview.frame.size, false, 0.0)
         
-        imagePreview.image?.draw(in: imageRect)
+        filteredImagePreview.image?.draw(in: imageRect)
         
         if let context = UIGraphicsGetCurrentContext() {
             
@@ -353,7 +356,7 @@ class EditScreenViewController: UIViewController, UICollectionViewDataSource, UI
             
             context.strokePath()
             
-            imagePreview.image = UIGraphicsGetImageFromCurrentImageContext()
+            filteredImagePreview.image = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             
         }

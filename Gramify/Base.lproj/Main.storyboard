@@ -16,6 +16,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="We4-nN-emp">
+                                <rect key="frame" x="20" y="65" width="374" height="578"/>
+                            </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7FK-ei-WP6">
                                 <rect key="frame" x="20" y="65" width="374" height="578"/>
                             </imageView>
@@ -104,15 +107,19 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="7FK-ei-WP6" firstAttribute="trailing" secondItem="tYb-mt-glw" secondAttribute="trailingMargin" id="1Gk-Ja-zrt"/>
+                            <constraint firstItem="We4-nN-emp" firstAttribute="bottom" secondItem="7FK-ei-WP6" secondAttribute="bottom" id="AGJ-Vt-0fx"/>
                             <constraint firstItem="7FK-ei-WP6" firstAttribute="top" secondItem="2vU-SG-2Ut" secondAttribute="top" constant="21" id="Aaz-M4-5B2"/>
                             <constraint firstItem="boT-6T-wWF" firstAttribute="trailing" secondItem="f7M-8g-Cfv" secondAttribute="trailing" id="BuH-8V-ZLZ"/>
                             <constraint firstItem="7FK-ei-WP6" firstAttribute="centerX" secondItem="boT-6T-wWF" secondAttribute="centerX" id="FGj-d0-Sxn"/>
+                            <constraint firstItem="We4-nN-emp" firstAttribute="top" secondItem="7FK-ei-WP6" secondAttribute="top" id="IzJ-4m-HiF"/>
                             <constraint firstItem="boT-6T-wWF" firstAttribute="top" secondItem="7FK-ei-WP6" secondAttribute="bottom" constant="16" id="Oij-pb-eb6"/>
                             <constraint firstItem="f7M-8g-Cfv" firstAttribute="top" secondItem="boT-6T-wWF" secondAttribute="bottom" constant="16" id="P1r-Gb-YAL"/>
                             <constraint firstItem="f7M-8g-Cfv" firstAttribute="leading" secondItem="2vU-SG-2Ut" secondAttribute="leading" id="UZ3-mO-3w7"/>
                             <constraint firstItem="2vU-SG-2Ut" firstAttribute="bottom" secondItem="phl-zy-G35" secondAttribute="bottom" constant="21" id="V1z-56-sFP"/>
                             <constraint firstItem="boT-6T-wWF" firstAttribute="leading" secondItem="f7M-8g-Cfv" secondAttribute="leading" id="aJ7-kW-LWP"/>
+                            <constraint firstItem="We4-nN-emp" firstAttribute="trailing" secondItem="7FK-ei-WP6" secondAttribute="trailing" id="fYJ-1S-rZQ"/>
                             <constraint firstItem="phl-zy-G35" firstAttribute="leading" secondItem="f7M-8g-Cfv" secondAttribute="leading" id="igc-jX-Eal"/>
+                            <constraint firstItem="We4-nN-emp" firstAttribute="leading" secondItem="7FK-ei-WP6" secondAttribute="leading" id="qFG-l5-5A1"/>
                             <constraint firstItem="7FK-ei-WP6" firstAttribute="leading" secondItem="tYb-mt-glw" secondAttribute="leadingMargin" id="rgi-a3-T0F"/>
                             <constraint firstItem="phl-zy-G35" firstAttribute="top" secondItem="f7M-8g-Cfv" secondAttribute="bottom" constant="16" id="xbs-nk-jFa"/>
                             <constraint firstItem="phl-zy-G35" firstAttribute="trailing" secondItem="f7M-8g-Cfv" secondAttribute="trailing" id="xf9-X7-kKb"/>
@@ -121,8 +128,9 @@
                     </view>
                     <navigationItem key="navigationItem" title="Editor" id="QB3-TM-bNY"/>
                     <connections>
-                        <outlet property="imagePreview" destination="7FK-ei-WP6" id="dwf-eV-Ijw"/>
+                        <outlet property="filteredImagePreview" destination="7FK-ei-WP6" id="Cay-Sx-hyh"/>
                         <outlet property="modeSelectCollectionView" destination="phl-zy-G35" id="Ae0-xn-Mol"/>
+                        <outlet property="originalImagePreview" destination="We4-nN-emp" id="qJN-rX-59g"/>
                         <outlet property="primaryEditCollectionView" destination="f7M-8g-Cfv" id="AFz-5P-Xlr"/>
                         <outlet property="secondaryEditCollectionView" destination="boT-6T-wWF" id="k0b-xi-sdX"/>
                     </connections>
